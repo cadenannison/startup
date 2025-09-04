@@ -9,7 +9,11 @@ git clone
 git pull
 git commit -am "update notes"
 git push
+git log
+git checkout
 ```
+git commit -am --> a is for add and m is a comment
 I also learned about using the "git status" and "git fetch" commands
+
 
 Markdown: I learned a few syntax specifications for **using** _markdown_ more <ins>effectively</ins>
