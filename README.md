@@ -1,4 +1,4 @@
-# Your startup name here
+# Rise and Play
 
 [My Notes](notes.md)
 

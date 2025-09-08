@@ -13,6 +13,7 @@ git log
 git checkout
 ```
 git commit -am --> a is for add and m is a comment
+git diff HEAD HEAD~1  -> difference between commits
 I also learned about using the "git status" and "git fetch" commands
 
 
