@@ -21,3 +21,19 @@ Markdown: I learned a few syntax specifications for **using** _markdown_ more <i
 Images: I learned that you need to make a relative path i.e. don't put a "/" in front of the path and do it respective to the root of the repository 
 
 `![Design image](images/RiseAndPlay.png)`
+
+## Secure Sign in 
+'''
+ssh -i [key pair file] ubuntu@[yourdomainnamehere]
+
+ssh -i ~/.ssh/production.pem ubuntu@54.84.3.178
+'''
+
+## CSS
+
+
+## HTML
+
+
+
+'''
