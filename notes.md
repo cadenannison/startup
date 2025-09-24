@@ -32,6 +32,7 @@ ssh -i ~/.ssh/production.pem ubuntu@54.84.3.178
 ## CSS
 
 
+
 ## HTML
 
 I have learned a ton about HTML recently. 
@@ -76,6 +77,7 @@ It essentially creates a class that is accesable by javascript so that I can upd
 
 <hr /> – A horizontal line
 
+<a href="">text</a> - hyperlinks
 
 
 
