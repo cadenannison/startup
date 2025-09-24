@@ -34,6 +34,11 @@ ssh -i ~/.ssh/production.pem ubuntu@54.84.3.178
 
 ## HTML
 
+I have learned a ton about HTML recently. 
+<head> – Contains metadata and resources
+<style> – Contains internal CSS rules. Basically lets you make a function that includes certain rules. 
+<meta name="viewport" content="width=device-width, initial-scale=1"> - this fixes mobile device viewing issues.
+
 
 
 ### Production Environment
