@@ -29,13 +29,13 @@ ssh -i [key pair file] ubuntu@[yourdomainnamehere]
 ssh -i ~/.ssh/production.pem ubuntu@54.84.3.178
 '''
 
-## CSS
+## HTML and CSS
 
 
+I have learned a ton about HTML and CSS recently. 
 
-## HTML
+<p style="color:">text</p> - this is similar to style except its within the actual line
 
-I have learned a ton about HTML recently. 
 <head> – Contains metadata and resources
 <style> – Contains internal CSS rules. Basically lets you make a function that includes certain rules. 
 <meta name="viewport" content="width=device-width, initial-scale=1"> - this fixes mobile device viewing issues.
