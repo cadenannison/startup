@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <style>
+    .user-info {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
@@ -12,6 +22,14 @@
 </html>
 
 <body>
+  <div class="user-info" id="user-info">
+    Logged in as: <span id="username">Guest</span>
+  </div>
+
+  <script>
+    const loggedInUser = "Caden"; 
+    document.getElementById("username").textContent = loggedInUser;
+  </script>
     <header>
       <h1>Rise and Play</h1>
 
