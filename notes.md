@@ -40,6 +40,42 @@ I have learned a ton about HTML recently.
 <meta name="viewport" content="width=device-width, initial-scale=1"> - this fixes mobile device viewing issues.
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> - importing the CSS from bootstrap so I can use their code / style
 
+<body> - means that it will be displayed
+<script src=""></script> - this is bascially a bootstrap pluggin for javascript
+
+This part is fairly difficult:
+'''
+<div class="user-info" id="user-info">
+    Logged in as: <span id="username">Guest</span>
+  </div>
+
+  <script>
+    const loggedInUser = "Caden"; 
+    document.getElementById("username").textContent = loggedInUser;
+  </script>
+'''
+It essentially creates a class that is accesable by javascript so that I can update the username once somebody logs in. 
+
+<h1> - this makes the text bigger or smaller as you increase the number after h
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark"> – this is bootstrap again and it makes a nav bar dark colored.
+
+<div class="container"> – Bootstrap container. Honestly bootstrap is super helpful
+
+<button class="navbar-toggler" ...> – Bootstrapss hamburger button
+
+<span class="navbar-toggler-icon"></span> – Icon inside the toggle button
+
+<div class="collapse navbar-collapse" id="navbarNav"> – Collapsible container for nav links
+
+<ul class="navbar-nav ms-auto"> – so ul is basically a container for a list
+
+<li class="nav-item"> – this is where the list comes in (ordered) within the ul code
+
+<a class="nav-link"> – Bootstrap-styled link inside nav bar
+
+<hr /> – A horizontal line
+
 
 
 
