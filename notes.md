@@ -36,4 +36,16 @@ ssh -i ~/.ssh/production.pem ubuntu@54.84.3.178
 
 
 
+### Production Environment
+
+**Giving deployFiles.sh permissions:**
+
+chmod +x ./deployFiles.sh
+
+**To deploy to my production environment I had to run:**
+
+./deployFiles.sh -k ~/.ssh/production.pem -h riseandplay.click -s startup
+
+that way I could gain access to my production.pem
+
 '''
