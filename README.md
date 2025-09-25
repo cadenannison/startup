@@ -74,11 +74,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [X] **Proper HTML element usage** - I used different HTML elements to create my web application. I used within each of my html files the different html tags such as body, nav, main, header, footer, etc in order to organize and style my page. I also used "style". 
 - [X] **Links** - Each of my web pages have hyperlinks that allow the viewer to navigate between pages. These are included at the top and I also started making a bar for mobile using Boostrap. 
 - [X] **Text** - I included text within my webpage. The text can be seen by the title, within the different boxes, in the footer, and part of the body for my games and info pages. 
-- [X] **3rd party API placeholder** - I created a box for the google maps api!
+- [X] **3rd party API placeholder** - I created a box for the google maps api on the games page!
 - [X] **Images** - I included a logo for my website on the info page and I plan to implement it in other parts of the website with CSS. 
-- [X] **Login placeholder** - I included a login placeholder in the index page and I should be able to update automatically with java script in the top right corner. 
+- [X] **Login placeholder** - I included a login placeholder in the index page and I should be able to update automatically with java script in the top right corner the "logged in as". 
 - [X] **DB data placeholder** - I have a placeholder for my data base where all the past activities will be stored and shown by the server on the games page. 
-- [X] **WebSocket placeholder** - I also made the activities box the place where the websocket holder will be displayed as it will update as people create and upload new activities. 
+- [X] **WebSocket placeholder** - I also made the activities box the place where the websocket holder will be displayed as it will update as people create and upload new activities on the games page. 
 
 ## 🚀 CSS deliverable
 
