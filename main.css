@@ -159,8 +159,42 @@ footer a {
   left: auto !important;
   top: auto !important;
   margin: 0 !important;
-
   display: inline-flex;
   align-items: center;
   gap: .25rem;
+}
+
+#activities-card {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#activities-card .content-scroll {
+  min-height: 0;
+  overflow: auto;
+}
+
+.create-details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.create-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+#activity-list .list-group-item {
+  padding: .6rem .75rem;
+}
+
+@media (max-width: 420px){
+   #activity-form .form-control {
+      font-size: .9rem; 
+      padding: .3rem .5rem; 
+    }
+   #activity-form .btn { 
+      padding: .3rem .5rem; 
+      font-size: .9rem; 
+    }
 }
