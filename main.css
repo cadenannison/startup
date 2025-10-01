@@ -4,8 +4,26 @@ body {
   min-width: 375px;
 }
 
+.site-title { 
+    font-size: clamp(1.5rem, 5vw, 2.5rem); 
+    font-weight: 700; 
+    font: roboto;
+    margin: 0.2em;
+    padding: 10px;        
+    top: 0;
+    z-index: 1000;      
+    background-color: rgb(159,198,235);
+    display: flex;    
+    box-shadow: 0 10px 25px rgba(15, 15, 15, 0.06);
+     
+}
+
 header {
   flex: 0 80px;
+  background-color: rgb(159, 198, 235);
+  position: sticky;
+  
+  
 }
 
 main {
