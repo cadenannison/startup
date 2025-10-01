@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="main.css" />
   </head>
+
   <body class="d-flex flex-column min-vh-100">
     <header>
       <div class="container header-top">
@@ -35,6 +36,7 @@
     </div>
   </nav>
   </header>
+
   <script>
     const loggedInUser = "Caden"; 
     document.getElementById("username").textContent = loggedInUser;
@@ -42,21 +44,20 @@
   
 
     <main>
-  <div class="container my-4">
-    <div class="card mb-4">
+  <div class="container my-4 cards-grid">
+    <div class="card mb-4" id="map-card">
       <div class="card-header">Locations</div>
-      <div class="card-body text-center" style="height: 300px;">
+      <div class="card-body text-center">
         <p class="text-muted my-auto">Google maps Api / third party service call</p>
       </div>
     </div>
 
-  <div class="card">
+  <div class="card" id="activity-card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <span>Activities</span>
-    <button class="btn btn-primary btn-sm" id="add-activity-btn">+</button>
+    <button class="btn btn-primary btn-sm" id="add-activity-btn" type="button">+</button>
   </div>
-
-  <div class="card-body overflow-auto" id="activity-container" style="max-height: 250px;">
+  <div class="card-body overflow-auto content-scroll" id="activity-container">
     <p class="text-muted">Activies / posts / This will be a mix of the websocket and database. Database will allow activities to be posted and maintained. Websocket will allows users to see in realtime updates to the activity log. </p>
   </div>
 </div>
