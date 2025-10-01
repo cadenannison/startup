@@ -18,43 +18,10 @@ body {
      
 }
 
-.user-badge {
-  .user-badge {
-  position: absolute;
-  right: 12px;
-  bottom: 8px;                        /* sits just above the navbar */
-  display: inline-flex;
-  align-items: baseline;
-  gap: .35rem;
-  padding: .35rem .6rem;
-  border-radius: 9999px;              /* pill */
-  font-size: .9rem;
-
-  /* Colors that look good on a dark/blue header */
-  color: #fff;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.28);
-  backdrop-filter: blur(2px);
-}
-}
-
-.user-info {
-  position: absolute;
-  right: 12px;
-  bottom: 8px;
-  font-size: 0.9rem;
-  color: rgba(75, 75, 75, 0.7); 
-}
-
-.user-info .username {
-  font-weight: bold;
-  color: #090808;
-  font-family: Arial;
-}
-
-/* Optional: tiny tweak for very small screens */
-@media (max-width: 400px) {
-  .user-info { right: 8px; bottom: 6px; font-size: 0.85rem; }
+.header-top{
+  position: relative;
+  padding: 4px; 
+  
 }
 
 
@@ -95,7 +62,7 @@ footer {
   padding: 10px;
 }
 
-games-footer {
+.games-footer {
   display: flex;
   font-weight: bold;
   color: black;
