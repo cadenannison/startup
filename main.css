@@ -18,12 +18,52 @@ body {
      
 }
 
+.user-badge {
+  .user-badge {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;                        /* sits just above the navbar */
+  display: inline-flex;
+  align-items: baseline;
+  gap: .35rem;
+  padding: .35rem .6rem;
+  border-radius: 9999px;              /* pill */
+  font-size: .9rem;
+
+  /* Colors that look good on a dark/blue header */
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(2px);
+}
+}
+
 .user-info {
-      position: absolute;
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  font-size: 0.9rem;
+  color: rgba(75, 75, 75, 0.7); 
+}
+
+.user-info .username {
+  font-weight: bold;
+  color: #090808;
+  font-family: Arial;
+}
+
+/* Optional: tiny tweak for very small screens */
+@media (max-width: 400px) {
+  .user-info { right: 8px; bottom: 6px; font-size: 0.85rem; }
+}
+
+
+.user-info {
+      display: flex;
       top: 10px;
       right: 20px;
       font-family: Arial, sans-serif;
-      font-size: 16px;
+      font-size: 10px;
       font-weight: bold;
 }
 
@@ -48,6 +88,15 @@ main {
 
 footer {
   flex: 0 30px;
+  font-weight: bold;
+  color: black;
+  background-color: rgb(159, 198, 235);
+  min-height: 60px;
+  padding: 10px;
+}
+
+games-footer {
+  display: flex;
   font-weight: bold;
   color: black;
   background-color: rgb(159, 198, 235);

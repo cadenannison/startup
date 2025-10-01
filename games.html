@@ -8,15 +8,9 @@
   </head>
   <body class="d-flex flex-column min-vh-100">
     <header>
-      <h1 class="site-title">Rise and Play</h1>   
-      <div class="user-info" id="user-info">
-        Logged in as: <span id="username">Guest</span>
-      </div>
-      <script>
-        const loggedInUser = "Caden"; 
-        document.getElementById("username").textContent = loggedInUser;
-      </script>   
-
+      <h1 class="site-title m-0">Rise and Play</h1>
+      <div id="user-info" class="user-info" aria-live="polite">Logged in as:&nbsp;<span id="username" class="username">Guest</span>
+      </div> 
       <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -39,6 +33,10 @@
     </div>
   </nav>
   </header>
+  <script>
+    const loggedInUser = "Caden"; 
+    document.getElementById("username").textContent = loggedInUser;
+  </script>
   
 
     <main>
@@ -63,7 +61,7 @@
 
     </main>
 
-    <footer>
+    <footer class = "games-footer">
       <div class="container-fluid">
       <span class="text-reset">By Caden Annison</span>
       <a href="https://github.com/cadenannison/startup">GitHub</a>
