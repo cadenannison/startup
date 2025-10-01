@@ -23,7 +23,6 @@ header {
   background-color: rgb(159, 198, 235);
   position: sticky;
   
-  
 }
 
 main {
@@ -35,13 +34,16 @@ main {
   min-height: 0;
   gap: 1rem;
   padding: 1rem;
+  background-color: #eef5ff;
 }
 
 footer {
   flex: 0 30px;
-  color: white;
+  font-weight: bold;
+  color: black;
   background-color: rgb(159, 198, 235);
   min-height: 60px;
+  padding: 10px;
 }
 
 menu {
