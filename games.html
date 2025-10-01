@@ -42,57 +42,63 @@
     document.getElementById("username").textContent = loggedInUser;
   </script>
   
-
-    <main>
-  <div class="container my-4 cards-grid">
-    <div class="card mb-4" id="map-card">
-      <div class="card-header">Locations</div>
-      <div class="card-body text-center">
-        <p class="text-muted my-auto">Google maps Api / third party service call</p>
+  <main>
+    <div class="container my-4 cards-grid">
+      <div class="card mb-4" id="map-card">
+        <div class="card-header">Locations</div>
+        <div class="card-body text-center">
+          <p class="text-muted my-auto">Google maps Api / third party service call</p>
+        </div>
       </div>
+
+    <div class="card" id="activity-card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span class="fw-semibold">Activities</span>
+      <button
+        class="btn btn-primary btn-sm ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#newActivityForm"
+        aria-expanded="false"
+        aria-controls="newActivityForm">
+        <span aria-hidden="true">+</span> Create activity
+      </button>
     </div>
 
-  <div class="card" id="activity-card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-semibold">Activities</span>
-    <button
-      class="btn btn-primary btn-sm ms-auto"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#newActivityForm"
-      aria-expanded="false"
-      aria-controls="newActivityForm">
-      <span aria-hidden="true">+</span> Create activity
-    </button>
-  </div>
-
-  <div id="newActivityForm" class="collapse border-top">
-    <form id="activity-form" class="row g-2 mt-2" action="#" method="post" novalidate>
-      <div class="col-12 col-md-4">
-        <label for="act-location" class="form-label visually-hidden">Location</label>
-        <input class="form-control" id="act-location" name="location" placeholder="Location" required>
-      </div>
-      <div class="col-12 col-md-5">
-        <label for="act-text" class="form-label visually-hidden">What</label>
-        <input class="form-control" id="act-text" name="text" placeholder="What are we playing?" required>
-      </div>
-      <div class="col-6 col-md-2">
-        <label for="act-username" class="form-label visually-hidden">Username</label>
-        <input class="form-control" id="act-username" name="username" placeholder="Username" value="Caden">
-      </div>
-      <div class="col-6 col-md-1 d-grid">
-        <button class="btn btn-success" type="button">Add</button>
-      </div>
-    </form>
-    <div class="card-body content-scroll" id="activity-container" role="region" aria-live="polite" aria-label="Activities list">
-      <p class="text-muted m-0" data-empty-hint>No activities yet!</p>
-      <ul class="list-group list-group-flush" id="activity-list"></ul>
+    <div id="newActivityForm" class="collapse border-top">
+      <form id="activity-form" class="row g-2 mt-2" action="#" method="post" novalidate>
+        <div class="col-12 col-md-4">
+          <label for="act-location" class="form-label visually-hidden">Location</label>
+          <input class="form-control" id="act-location" name="location" placeholder="Location" required>
+        </div>
+        <div class="col-12 col-md-5">
+          <label for="act-text" class="form-label visually-hidden">What</label>
+          <input class="form-control" id="act-text" name="text" placeholder="What are we playing?" required>
+        </div>
+        <div class="col-6 col-md-2">
+          <label for="act-username" class="form-label visually-hidden">Username</label>
+          <input class="form-control" id="act-username" name="username" placeholder="Username" value="Caden">
+        </div>
+        <div class="col-6 col-md-1 d-grid">
+          <button class="btn btn-success" type="button">Add</button>
+        </div>
+      </form>
     </div>
-  </div>
-    
- 
+    <div class="card-body p-0 d-flex flex-column" id="activity-container" role="region" aria-live="polite" aria-label="Activities list">
+      <div class="px-3 py-2 border-top bg-body-tertiary small text-muted">
+        Activity feed
+      </div>
+      <div class="feed flex-grow-1 overflow-auto">
+        <p class="text-muted m-0 p-3 text-center" data-empty-hint>
+          No activities yet!
+        </p>
+        <ul class="list-group list-group-flush" id="activity-list"></ul>
+      </div>
+    </div>
+      
+  
 
-    </main>
+  </main>
 
     <footer class = "games-footer">
       <div class="container-fluid">
