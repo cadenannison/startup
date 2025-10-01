@@ -19,28 +19,41 @@ body {
 }
 
 .header-top{
+  display: flex;   
+  align-items: flex-end;  
+  gap: 12px;
+  padding: 6px 0;   
   position: relative;
-  padding: 4px; 
-  display: flex;
 }
 
 .user-info {
-      display: flex;
-      text-align: right;
-      top: 10px;
-      right: 20px;
-      font-family: Arial, sans-serif;
-      font-size: 10px;
-      font-weight: bold;
-      position: static;        
-      margin-left: auto;       
-      display: inline-flex;  
-      padding: 5px;
-      text-align: bottom;  
+  margin-left: auto; 
+  display: inline-flex;  
+  align-items: baseline;
+  gap: .35rem;
+  padding: .2rem .5rem;;
+  border-radius: 9999px;
+  background: #7786a5;  
+  color: #fdfdfd; 
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+
+  font-family: Arial, sans-serif;
+  font-size: 0.5rem;      
+  font-weight: 600;  
+}
+
+.user-info .username{
+  font-weight: 700;
+}
+
+@media (max-width: 420px){
+  .header-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .user-info { margin-left: 0; }
 }
 
 header {
-  flex: 0 80px;
+  flex: 0 0 auto;
   background-color: rgb(159, 198, 235);
   position: sticky;
   
@@ -79,7 +92,6 @@ footer {
 menu {
   flex: 1;
   display: flex;
-  /*  overwrite Bootstrap so the menu does not wrap */
   flex-direction: row !important;
   list-style: none;
 }
@@ -107,4 +119,17 @@ footer a {
   main {
     flex: 1 100vh;
   }
+}
+
+.header-top .user-info {
+  position: absolute !important;
+  right: 24px !important;
+  bottom: 8px !important;
+  left: auto !important;
+  top: auto !important;
+  margin: 0 !important;
+
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
 }
