@@ -66,33 +66,36 @@
     </div>
 
     <div id="newActivityForm" class="collapse border-top">
-      <form id="activity-form" class="row g-2 mt-2" action="#" method="post" novalidate>
-        <div class="col-12 col-md-4">
-          <label for="act-location" class="form-label visually-hidden">Location</label>
-          <input class="form-control" id="act-location" name="location" placeholder="Location" required>
-        </div>
-        <div class="col-12 col-md-5">
-          <label for="act-text" class="form-label visually-hidden">What</label>
-          <input class="form-control" id="act-text" name="text" placeholder="What are we playing?" required>
-        </div>
-        <div class="col-12">
-          <label for="act-comment" class="form-label visually-hidden">Comment</label>
-          <textarea
-            class="form-control"
-            id="act-comment"
-            name="comment"
-            rows="2"
-            placeholder="Comment (optional)"></textarea>
-        </div>
-        <div class="col-6 col-md-2">
-          <label for="act-username" class="form-label visually-hidden">Username</label>
-          <input class="form-control" id="act-username" name="username" placeholder="Username" value="Caden">
-        </div>
-        <div class="col-6 col-md-1 d-grid">
-          <button class="btn btn-success" type="button">Add</button>
+      <form id="activity-form" class="p-3 p-md-4" action="#" method="post" novalidate>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <label for="act-location" class="form-label visually-hidden">Location</label>
+            <input class="form-control" id="act-location" name="location" placeholder="Location" required>
+          </div>
+          <div class="col-12 col-md-5">
+            <label for="act-text" class="form-label visually-hidden">What</label>
+            <input class="form-control" id="act-text" name="text" placeholder="What are we playing?" required>
+          </div>
+          <div class="col-12">
+            <label for="act-comment" class="form-label visually-hidden">Comment</label>
+            <textarea
+              class="form-control"
+              id="act-comment"
+              name="comment"
+              rows="2"
+              placeholder="Comment (optional)"></textarea>
+          </div>
+          <div class="col-6 col-md-2">
+            <label for="act-username" class="form-label visually-hidden">Username</label>
+            <input class="form-control" id="act-username" name="username" placeholder="Username" value="Caden">
+          </div>
+          <div class="col-6 col-md-1 d-grid">
+            <button class="btn btn-success" type="button">Add</button>
+          </div>
         </div>
       </form>
     </div>
+
     <div class="card-body p-0 d-flex flex-column" id="activity-container" role="region" aria-live="polite" aria-label="Activities list">
       <div class="px-3 py-2 border-top bg-body-tertiary small text-muted">
         Activity feed
