@@ -4,6 +4,11 @@ body {
   min-width: 375px;
 }
 
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    }
+
 .site-title { 
   font-size: 2em; 
   font-weight: 700; 
