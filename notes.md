@@ -108,6 +108,9 @@ display: block;
 
 Making gradients is actually pretty easy with "linear-gradient:" or "radial-gradient". 
 
+With forms:
+      <form id="activity-form" class="p-3 p-md-4" action="#" method="post" novalidate>
+you can actually use Javascript to process and submit them so this builds functionality.
 
 ### Production Environment
 
