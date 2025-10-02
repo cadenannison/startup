@@ -170,8 +170,8 @@ footer a {
 }
 
 #activity-form .row {
-  --bs-gutter-x: 1rem; 
-  --bs-gutter-y: .75rem; 
+  --gutter-x: 1rem; 
+  --gutter-y: .75rem; 
 }
 
 #activity-card {

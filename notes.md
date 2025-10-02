@@ -78,7 +78,35 @@ It essentially creates a class that is accesable by javascript so that I can upd
 <hr /> – A horizontal line
 
 <a href="">text</a> - hyperlinks
+'''
 
+I continued to add more CSS. In this case I learned a lot about window sizing and styling. 
+
+display: flex;
+flex-direction: column;
+
+margin:
+padding: - padding and margin has been super usefull for spacing well. 
+
+position: relative;
+position: sticky; - a few other cool positioning tricks. 
+
+display: grid; - helpful for creating layouts of multiple elements. 
+
+Using different tags has been a cool way to target specific elements within my html code. 
+#activities-card
+
+right: 24px !important;
+
+putting !important makes it so that this piece of code will overide others
+
+using ":root" lets you make presets or assign a variable to a specific value or color.
+
+I learned that making an underline is possible with this 
+content: "";
+display: block;
+
+Making gradients is actually pretty easy with "linear-gradient:" or "radial-gradient". 
 
 
 ### Production Environment
@@ -94,3 +122,4 @@ chmod +x ./deployFiles.sh
 that way I could gain access to my production.pem
 
 '''
+

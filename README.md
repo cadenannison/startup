@@ -84,12 +84,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [X] **Header, footer, and main content body** - I made my header include a title, nav elements, and a sign in username placeholder. These are styled with color and spaced. I have a footer that doesn't overlap content and includes my name and github. I have a main content body that is properly styled and spaced out. 
+- [X] **Navigation elements** - I have a navigation bar with a hamburger button that uses bootstrap to make a responsive menu.
+- [X] **Responsive to window resizing** - When I move my window around, the elements autonmatically expand or collapse so that the view is always visible on boht computer and mobile. 
+- [x] **Application elements** - I created buttons on the sign in page. I also have a form creation area on my games.html page where people can create and post their activity. There is a small hover animation on the last content box in the info page. 
+- [X] **Application text content** - There is text on every page including titles, paragraphs, and info boxes to guide users in using the application. 
+- [X] **Application images** - I styled my website logo on the info page to be in a box and look cool. It can also expand to meet the window resize requirements. 
 
 ## 🚀 React part 1: Routing deliverable
 
