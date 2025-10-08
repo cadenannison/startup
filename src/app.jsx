@@ -1,0 +1,65 @@
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './app.css';
+
+export default function App() {
+  const [username] = useState('Guest'); // replace with real auth later
+
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <header>
+        <div className="container header-top">
+          <h1 className="site-title m-0">Rise and Play</h1>
+          <div id="user-info" className="user-info">
+            Logged in as:&nbsp;<span id="username" className="username">{username}</span>
+          </div>
+        </div>
+
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+          <div className="container">
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                  <a className="nav-link" href="index.html">Home</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link active" href="games.html" aria-current="page">Games</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="info.html">Info</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main className="flex-grow-1">
+        App components go here
+      </main>
+
+      <footer className="games-footer bg-dark text-white-50">
+        <div className="container-fluid">
+          <span className="text-reset">By Caden Annison</span>
+          <a className="text-reset" href="https://github.com/cadenannison/startup">GitHub</a>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// const loggedInUser = "Guest"; 
+// document.getElementById("username").textContent = loggedInUser;

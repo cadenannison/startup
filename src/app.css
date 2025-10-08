@@ -1,0 +1,300 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 375px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    }
+
+.site-title { 
+  font-size: 2em; 
+  font-weight: 700; 
+  font-family: roboto;
+  margin: 0.2em;
+  padding: 10px;        
+  top: 0;
+  z-index: 1000;      
+  background-color: rgb(159,198,235);
+  display: flex;    
+  box-shadow: 0 10px 25px rgba(15, 15, 15, 0.06);
+}
+
+.header-top{
+  display: flex;   
+  align-items: flex-end;  
+  gap: 12px;
+  padding: 6px 0;   
+  position: relative;
+}
+
+.user-info {
+  margin-left: auto; 
+  display: inline-flex;  
+  align-items: baseline;
+  gap: .35rem;
+  padding: .2rem .5rem;;
+  border-radius: 9999px;
+  background: #7786a5;  
+  color: #fdfdfd; 
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  font-family: Arial, sans-serif;
+  font-size: 0.5rem;      
+  font-weight: 600;  
+}
+
+.user-info .username{
+  font-weight: 700;
+  color: #eaf4ff;
+  font-size: 0.6rem;
+}
+
+@media (max-width: 420px){
+  .header-top { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 8px; 
+  }
+  .user-info { 
+    margin-left: 0; 
+  }
+}
+
+header {
+  flex: 0 0 auto;
+  background-color: rgb(159, 198, 235);
+  position: sticky;
+  
+}
+
+main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1rem 80px;  
+  background-color: #eef5ff;
+  min-height: 0;
+  align-items: stretch;  
+  justify-content: flex-start;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  height: 100%;
+  min-height: 0;
+}
+
+#map-card .card-body {
+  height: clamp(180px, 28vh, 360px);
+  display: grid;
+  place-items: center; 
+}
+
+#activities-card {
+  min-height: 0;
+  display: flex; 
+  flex-direction: column;
+}
+#activities-card .content-scroll {
+  min-height: 0; 
+  overflow: auto; 
+  padding: 1rem; 
+}
+
+footer {
+  flex: 0 30px;
+  font-weight: bold;
+  color: black;
+  background-color: rgb(159, 198, 235);
+  min-height: 60px;
+  padding: 10px;
+}
+
+.games-footer {
+  display: flex;
+  font-weight: bold;
+  color: black;
+  background-color: rgb(159, 198, 235);
+  min-height: 60px;
+  padding: 10px;
+}
+
+menu {
+  flex: 1;
+  display: flex;
+  flex-direction: row !important;
+  list-style: none;
+}
+
+.navbar-brand {
+  padding-left: 0.3em;
+  border-bottom: solid rgb(182, 182, 182) thin;
+}
+
+menu .nav-item {
+  padding: 0 0.3em;
+}
+
+footer a {
+  float: right;
+}
+
+@media (max-height: 600px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+  main {
+    flex: 1 100vh;
+  }
+}
+
+.header-top .user-info {
+  position: absolute !important;
+  right: 24px !important;
+  bottom: 8px !important;
+  left: auto !important;
+  top: auto !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+#activity-form .row {
+  --gutter-x: 1rem; 
+  --gutter-y: .75rem; 
+}
+
+#activity-card {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#activity-card .content-scroll {
+  min-height: 0;
+  overflow: auto;
+}
+
+.create-details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.create-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+#activity-list .list-group-item {
+  padding: .6rem .75rem;
+}
+
+@media (max-width: 420px){
+   #activity-form .form-control {
+      font-size: .9rem; 
+      padding: .3rem .5rem; 
+    }
+   #activity-form .btn { 
+      padding: .3rem .5rem; 
+      font-size: .9rem; 
+    }
+}
+
+/* <!-- I'm not sure if this is normally added at the top of the document or if I can put it here, but this is my attempt lol --> */
+:root{
+  --blue-700: #1f4ea8;
+  --blue-500: #2b77e4;
+  --blue-300: #9fc6eb;
+  --ink: #0f172a;
+  --panel-bg: rgba(255,255,255,.88);
+  --panel_border: rgba(43,119,228,.20);
+}
+
+.info-title{
+  font-weight: 800;
+  letter-spacing: .2px;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--blue-700), var(--blue-500));
+  background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+}
+.info-title::after{
+  content: "";
+  display: block;
+  height: .25rem;
+  width: 143px;
+  margin-top: .35rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue-700), var(--blue-300));
+}
+
+.info-body{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+@media (min-width: 992px){
+  .info-body{
+    grid-template-columns: 7fr 5fr;
+    gap: 1.25rem;
+  }
+}
+
+.content-panel{
+  background: var(--panel-bg);
+  border: 1px solid var(--panel_border);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(15, 15, 15, 0.06);
+  backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--ink);
+  padding: 1rem 1.1rem;
+}
+
+@media (min-width: 768px){
+  .content-panel{ padding: 1.5rem 1.75rem; }
+}
+
+.info-list{
+  list-style: none;
+  padding-left: 0;
+}
+.info-list li{
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: .5rem;
+}
+.info-list li::before{
+  content: "";
+  position: absolute; left: 0; top: .55rem;
+  width: .5rem; height: .5rem; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--blue-300), var(--blue-700));
+  box-shadow: 0 0 0 2px rgba(43,119,228,.15);
+}
+
+.image-panel{ margin: 0; }
+
+.info-image{
+  display: block;
+  border: 1px solid rgba(0,0,0,.05);
+  transition: transform .35s ease, box-shadow .35s ease, filter .35s ease;
+  filter: saturate(1.02) contrast(1.02);
+}
+.info-image:hover{
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 18px 38px rgba(0,0,0,.14);
+}
