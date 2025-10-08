@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import './app.css';
 
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
-import { Login } from './login/login';
-import { Play } from './games/games';
-import { Scores } from './info/info';
+import { Login } from './login/login.jsx';
+import { Games } from './games/games.jsx';
+import { Info } from './info/info.jsx';
 
 export default function App() {
   const [username] = useState('Guest'); // replace with real auth later
@@ -39,14 +40,31 @@ export default function App() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="index.html">Home</NavLink>
+                    <NavLink className="nav-link" to="">
+                        Login
+                    </NavLink>
+                    </li>
+                    <li className="nav-item">
+                    <NavLink className="nav-link" to="games">
+                        games
+                    </NavLink>
+                    </li>
+                    <li className="nav-item">
+                    <NavLink className="nav-link" to="info">
+                        Info
+                    </NavLink>
+                </li>
+                {/* <li className="nav-item">
+                  <NavLink className="nav-link" to="">
+                    Login
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link active" to="games.html" aria-current="page">Games</NavLink>
+                  <NavLink className="nav-link active" to="/games">Games</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="info.html">Info</NavLink>
-                </li>
+                  <NavLink className="nav-link" to="/info">Info</NavLink>
+                </li> */}
               </ul>
             </div>
           </div>
