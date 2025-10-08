@@ -112,7 +112,7 @@ With forms:
       <form id="activity-form" class="p-3 p-md-4" action="#" method="post" novalidate>
 you can actually use Javascript to process and submit them so this builds functionality.
 
-### Production Environment
+## Production Environment
 
 **Giving deployFiles.sh permissions:**
 
@@ -125,4 +125,23 @@ chmod +x ./deployFiles.sh
 that way I could gain access to my production.pem
 
 '''
+
+## React 
+
+### Vite
+Commands for getting Vite: 
+
+npm init -y
+npm install vite@latest -D
+
+then change package.json within the script:
+
+"scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+
+  
+
 
