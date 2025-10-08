@@ -3,10 +3,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './app.css';
 
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { Play } from './games/games';
+import { Scores } from './info/info';
+
 export default function App() {
   const [username] = useState('Guest'); // replace with real auth later
 
   return (
+    <BrowserRouter>
     <div className="d-flex flex-column min-vh-100">
       <header>
         <div className="container header-top">
@@ -33,13 +39,13 @@ export default function App() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <a className="nav-link" href="index.html">Home</a>
+                  <NavLink className="nav-link" to="index.html">Home</NavLink>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link active" href="games.html" aria-current="page">Games</a>
+                  <NavLink className="nav-link active" to="games.html" aria-current="page">Games</NavLink>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="info.html">Info</a>
+                  <NavLink className="nav-link" to="info.html">Info</NavLink>
                 </li>
               </ul>
             </div>
@@ -58,6 +64,7 @@ export default function App() {
         </div>
       </footer>
     </div>
+    </BrowserRouter>
   );
 }
 
