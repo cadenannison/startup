@@ -95,9 +95,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [X] **Bundled using Vite** - I downloaded and installed everything needed to bundle my application with Vite. 
+- [X] **Components** - I was able to route my webapplication using the app.jsx file to build out my header and footer elements. then using BrowserRouter and the Route code pieces I was able to call the different parts of my website using react components and triggering the functions wihtin my jsx files for each page of my website. These I was able to isolate into a single file by moving my main HTML elements over and I was able to make everything fully functional. 
+- [X] **Router** - I was able to build out the router within my app.css to route between the different react components instead of loading up new pages each time. This ended up being a bit difficult because a few small typos occured while I was importing the functions "jsx files", but I was able to debug everything so it went well. 
 
 ## 🚀 React part 2: Reactivity deliverable
 
