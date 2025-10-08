@@ -128,6 +128,167 @@ that way I could gain access to my production.pem
 
 ## React 
 
+**Importing Bootstrap:**
+
+npm install bootstrap react-bootstrap
+
+**Enable React:**
+
+npm install react react-dom react-router-dom
+
+**Create your HTML file:**
+login.html
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>Simon React</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/index.jsx"></script>
+  </body>
+</html>
+
+**Then make the index.jsx:**
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './src/app';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
+**and app.jsx:**
+
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
+
+export default function App() {
+  return <div className="body bg-dark text-light">App will display here</div>;
+}
+
+add your *header* and *footer* to the app.jsx file
+
+**then put everything into your app.css**
+
+**then create jsx files for each page**
+
+*Build a function for each*
+
+import React from 'react';
+
+export function Login() {
+  return (
+    <main className="container-fluid bg-secondary text-center">
+      <div>login displayed here</div>
+    </main>
+  );
+}
+
+**import router in the top part of app.jsx**
+
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { Play } from './play/play';
+import { Scores } from './scores/scores';
+import { About } from './about/about';
+
+And surround your main function in app.jsx with <BrowserRouter>
+
+Then change the links within app.jsx to this format
+
+'''<NavLink className='nav-link' to='play'>Play</NavLink>'''
+
+**Inject routing component**
+
+Below main in app.jsx put:
+
+
+<Routes>
+  <Route path='/' element={<Login />} exact />
+  <Route path='/play' element={<Play />} />
+  <Route path='/scores' element={<Scores />} />
+  <Route path='/about' element={<About />} />
+  <Route path='*' element={<NotFound />} />
+</Routes>
+
+and create a now function:
+
+function NotFound() {
+  return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
+}
+
+**Converting to pure react**
+
+Put the main of each HTML file into the respective jsx react file. Making sure to change class -> className 
+
+and import the css files:
+
+import './scores.css';
+
+**Deploy React**
+
+*create deployReact.sh and past this in:*
+
+'''
+
+while getopts k:h:s: flag
+do
+    case "${flag}" in
+        k) key=${OPTARG};;
+        h) hostname=${OPTARG};;
+        s) service=${OPTARG};;
+    esac
+done
+
+if [[ -z "$key" || -z "$hostname" || -z "$service" ]]; then
+    printf "\nMissing required parameter.\n"
+    printf "  syntax: deployReact.sh -k <pem key file> -h <hostname> -s <service>\n\n"
+    exit 1
+fi
+
+printf "\n----> Deploying React bundle $service to $hostname with $key\n"
+
+# Step 1
+printf "\n----> Build the distribution package\n"
+rm -rf build
+mkdir build
+npm install # make sure vite is installed so that we can bundle
+npm run build # build the React front end
+cp -rf dist/* build # move the React front end to the target distribution
+
+# Step 2
+printf "\n----> Clearing out previous distribution on the target\n"
+ssh -i "$key" ubuntu@$hostname << ENDSSH
+rm -rf services/${service}/public
+mkdir -p services/${service}/public
+ENDSSH
+
+# Step 3
+printf "\n----> Copy the distribution package to the target\n"
+scp -r -i "$key" build/* ubuntu@$hostname:services/$service/public
+
+# Step 5
+printf "\n----> Removing local copy of the distribution package\n"
+rm -rf build
+rm -rf dist
+
+'''
+
+**Checking changes** 
+"""
+npm run dev
+"""
+
+
 ### Vite
 Commands for getting Vite: 
 
@@ -142,6 +303,6 @@ then change package.json within the script:
     "preview": "vite preview"
   }
 
-  
+
 
 
