@@ -53,9 +53,12 @@ export default function App() {
         </nav>
       </header>
 
-      <main className="flex-grow-1">
-        App components go here
-      </main>
+      <Routes>
+        <Route path='/' element={<Login />} exact />
+        <Route path='/games' element={<Games />} />
+        <Route path='/info' element={<Info />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
 
       <footer className="games-footer bg-dark text-white-50">
         <div className="container-fluid">
