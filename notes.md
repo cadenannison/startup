@@ -122,9 +122,64 @@ Margin: space outside the element (between border and other elements).
 
 If the container uses display: flex; the images will be displayed in a row by default, side by side, unless (flex-direction: column;) is specified.
 
- padding: 10px 20px; adds 10px top/bottom and 20px left/right inside the element
+padding: 10px 20px; adds 10px top/bottom and 20px left/right inside the element
 
- 
+The DOM represents the HTML document as a tree of objects. You can use JavaScript to access and modify
+DOM elements. Each HTML element is a node in the DOM.
+
+By default, the HTML span element has a default CSS display property value of:
+inline
+
+In CSS you can change element color with div { background-color: red; }
+
+**For adding images:**
+
+Ensure the image file is in the correct folder (public or
+images/) and the src path points to it.
+Example:
+&lt;a href="https://example.com"&gt;
+ &lt;img src="images/logo.png" alt="Logo"&gt;
+&lt;/a&gt;
+Folder scheme example:
+project/
+ index.html
+ images/
+ logo.png
+ css/
+ styles.css
+If using a framework, the image may need to be in a 'public' or 'static' folder so it is served directly
+
+**CSS Box Model**
+In the CSS box model, what is the ordering of the box layers starting at the inside and working
+out?
+Order: Content -> Padding -> Border -> Margin
+Diagram:
++----------------+
+| Margin |
+| +------------+ |
+| | Border | |
+| | +--------+ | |
+| | |Padding | | |
+| | |Content | | |
+| | +--------+ | |
+| +------------+ |
++----------------+
+Padding increases size inside border; margin creates space between elements.
+
+Setting HTML with a "class" to different effects in CSS
+Given <p><span class="trouble">trouble</span> double</p>, use .trouble { color: green; }
+
+for (let i = 0; i < 3; i++) { console.log(i); }
+This initializes i=0, checks i<3 each loop, runs body and increments i++ after each iteration. 
+
+What is the opening HTML tag for a paragraph, ordered list, unordered list, second level
+heading, first level heading, third level heading?
+Paragraph: <p>, Ordered list: <ol>, Unordered list: <ul>, h2: <h2>, h1: <h1>, h3: <h3>
+
+Set Document to HTML:
+<!DOCTYPE html>
+
+
 
 ## Production Environment
 
@@ -318,5 +373,87 @@ then change package.json within the script:
   }
 
 
+## JavaScript
+
+Arrow functions are a compact function syntax. (a, b) => a + b means a function with parameters a and b that
+returns a+b.
+Examples:
+const add = (a, b) => a + b;
+const greet = name => `Hi ${name}`;
+const square = x => { return x * x; } // block form
+
+map() transforms every element of an array and returns a new array without mutating the original.
+Examples:
+const nums = [1,2,3];
+const doubled = nums.map(n => n * 2); // [2,4,6]
+const names = ['Amy','Bob'];
+const greetings = names.map(n => `Hi ${n}`); // ['Hi Amy','Hi Bob']
+
+Typical pattern:
+const btn = document.getElementById('btn');
+btn.addEventListener('click', () => console.log('Clicked!'));
+Behavior: When user clicks the element with id 'btn', the callback runs and prints 'Clicked!'.
+
+EventListener: Waits for a event
+GetElementById: select a specfic element by the ID tag in the HTML file
+
+document.querySelector('#title') selects the first element that matches the CSS selector #title elemequerySelector accepts any CSS selector (classes, attributes, pseudos)
 
 
+How would you use JavaScript to select an element with the id of “byu” and change the text color of that element to green?
+Option 1 (direct):
+document.getElementById('byu').style.color = 'green';
+Option 2 (variable):
+const byu = document.getElementById('byu');
+byu.style.color = 'green';
+Explanation: getElementById returns the DOM element. Assigning to variable avoids querying repeatedly.
+
+What is valid javascript syntax for if, else, for, while, switch statements?
+if (x > 5) { ... } else { ... } for (...) { ... } while (...) { ... } switch (x) { case 1: ...; break; default: ... }
+
+**Creating JS Object** 
+
+const person = { name: "John", age: 30 };
+
+Adding new properties:
+Example: person.city = "Provo";
+
+**Including JS on the HTML Page** 
+
+<script src="script.js"></script>
+
+Given the following HTML, what JavaScript could you use to set the text "animal" to "crow" and
+leave the "fish" text unaffected?HTML:
+<p id="animal">animal</p>
+<p id="fish">fish</p>
+Option 1 (direct):
+document.getElementById('animal').textContent = 'crow';
+
+Option 2 (variable):
+const animal = document.getElementById('animal');
+animal.textContent = 'crow';
+
+Both work; second is clearer if reusing element.
+
+**JSON**
+
+JSON (JavaScript Object Notation) is a text-based format for structured data using key-value pairs. 
+Example: {
+  "name": "John", "age": 25 
+}
+
+## Commands
+
+chmod - change permissions, 
+pwd - print working directory, 
+cd - change directory, 
+ls - list files, 
+vim/nano - text editors, 
+mkdir - make directory, 
+mv - move/rename, 
+rm - remove, 
+man - manual, 
+ssh - remote shell, 
+ps - processes, 
+wget - download files, 
+sudo - run as admin
