@@ -112,6 +112,20 @@ With forms:
       <form id="activity-form" class="p-3 p-md-4" action="#" method="post" novalidate>
 you can actually use Javascript to process and submit them so this builds functionality.
 
+<link> links an external resource (usually a CSS file) to the HTML document. Example: <link rel="stylesheet"
+href="styles.css"> applies styles from styles.css to the page.
+
+<div> is a block-level container that groups other elements. It's used for structure and layout. It doesn't change behavior by itself. 
+
+Padding: space inside the element (between content and border). 
+Margin: space outside the element (between border and other elements).
+
+If the container uses display: flex; the images will be displayed in a row by default, side by side, unless (flex-direction: column;) is specified.
+
+ padding: 10px 20px; adds 10px top/bottom and 20px left/right inside the element
+
+ 
+
 ## Production Environment
 
 **Giving deployFiles.sh permissions:**
