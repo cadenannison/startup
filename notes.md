@@ -179,6 +179,15 @@ Paragraph: <p>, Ordered list: <ol>, Unordered list: <ul>, h2: <h2>, h1: <h1>, h3
 Set Document to HTML:
 <!DOCTYPE html>
 
+Can a DNS A record can point to an IP address or another A record?
+A DNS A record points to an IP address; it should not point to another A record.
+
+Port 443, 80, 22 is reserved for which protocol?
+443 -> HTTPS, 
+80 -> HTTP, 
+22 -> SSH
+
+
 
 
 ## Production Environment
@@ -194,6 +203,10 @@ chmod +x ./deployFiles.sh
 that way I could gain access to my production.pem
 
 '''
+
+## HTTPS
+Is a web certificate is necessary to use HTTPS.
+Yes, HTTPS requires a valid SSL/TLS certificate.
 
 ## React 
 
@@ -326,7 +339,7 @@ fi
 
 printf "\n----> Deploying React bundle $service to $hostname with $key\n"
 
-# Step 1
+### Step 1
 printf "\n----> Build the distribution package\n"
 rm -rf build
 mkdir build
@@ -334,18 +347,18 @@ npm install # make sure vite is installed so that we can bundle
 npm run build # build the React front end
 cp -rf dist/* build # move the React front end to the target distribution
 
-# Step 2
+### Step 2
 printf "\n----> Clearing out previous distribution on the target\n"
 ssh -i "$key" ubuntu@$hostname << ENDSSH
 rm -rf services/${service}/public
 mkdir -p services/${service}/public
 ENDSSH
 
-# Step 3
+### Step 3
 printf "\n----> Copy the distribution package to the target\n"
 scp -r -i "$key" build/* ubuntu@$hostname:services/$service/public
 
-# Step 5
+### Step 5
 printf "\n----> Removing local copy of the distribution package\n"
 rm -rf build
 rm -rf dist
@@ -403,6 +416,7 @@ document.querySelector('#title') selects the first element that matches the CSS 
 How would you use JavaScript to select an element with the id of “byu” and change the text color of that element to green?
 Option 1 (direct):
 document.getElementById('byu').style.color = 'green';
+
 Option 2 (variable):
 const byu = document.getElementById('byu');
 byu.style.color = 'green';
@@ -442,6 +456,24 @@ Example: {
   "name": "John", "age": 25 
 }
 
+Which of the following is true for the domain name banana.fruit.bozo.click, which is the top level domain, which is a subdomain, which is a root domain?
+
+TLD: .click, root domain: bozo.click, subdomain: fruit.bozo.click (and banana.fruit.bozo.click is a nested
+subdomain)
+
+
+What will the following code using Promises output when executed?
+Many possibilities depending on promise behavior. 
+
+Examples:
+1) Promise.resolve('Done').then(console.log) -> 'Done'
+2) Promise.reject('Error').catch(console.error) -> 'Error'
+3) new Promise(res => setTimeout(() => res('Hi'),1000)).then(console.log) -> 'Hi' after 1s
+4) Async function returns value -> printed when awaited or .then
+5) Promise chain: Promise.resolve(2).then(x=>x*2).then(x=>x+1).then(console.log) -> 5
+6) Reject handled -> shows error via catch.
+
+
 ## Commands
 
 chmod - change permissions, 
@@ -457,3 +489,6 @@ ssh - remote shell,
 ps - processes, 
 wget - download files, 
 sudo - run as admin
+
+ls -la lists all files (including hidden) in long format
+
