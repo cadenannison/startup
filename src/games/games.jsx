@@ -1,4 +1,5 @@
 import React from 'react';
+import MapBox from './mapBox';
 
 export function Games() {
   return (
@@ -7,7 +8,7 @@ export function Games() {
         <div className="card mb-4" id="map-card">
           <div className="card-header">Locations</div>
           <div className="card-body text-center">
-            <p className="text-muted my-auto">Google Maps API / third party service call</p>
+            <MapBox height="360px" /> 
           </div>
         </div>
 
