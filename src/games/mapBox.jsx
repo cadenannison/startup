@@ -25,22 +25,18 @@ export default function MapBox({
           version: "weekly",
         });
 
-        // Load the global google namespace
         const google = await loader.load();
         if (cancelled || !containerRef.current) return;
 
-        // Import map + marker libraries
         const [{ Map }] = await Promise.all([google.maps.importLibrary("maps")]);
         let AdvancedMarkerElement;
         try {
           ({ AdvancedMarkerElement } = await google.maps.importLibrary("marker"));
         } catch {
-          // marker library might not be available; that's fine
         }
 
         const map = new Map(containerRef.current, { center, zoom, mapId: "RAP_BASE" });
 
-        // Prefer AdvancedMarker if available, else fallback to Marker
         if (AdvancedMarkerElement) {
           new AdvancedMarkerElement({ map, position: center, title: "Rise & Play" });
         } else if (google.maps.Marker) {
@@ -63,27 +59,26 @@ export default function MapBox({
   return (
     <div
       ref={containerRef}
-      style={{ height, minHeight: 240, width: "100%", background: "#f8f9fa" }} // 👈 bg helps confirm size
-      className="position-relative"
+      style={{ position: "absolute", inset: 0 }} 
       id="map"
       aria-label="Map"
     >
-  
       {status !== "ready" && (
         <div
-          className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center fw-semibold"
+          className="d-flex flex-column align-items-center justify-content-center fw-semibold"
           style={{
-            zIndex: 2,                 // make sure it's on top
-            background: "#fffbe6",     // pale yellow
-            color: "#6b5900",
-            borderTop: "1px solid rgba(0,0,0,.08)"
+            position: "absolute",
+            inset: 0,
+            zIndex: 2,
+            background: "#fffbe6",
+            color: "#6b5900"
           }}
         >
           {status === "no-key" && (
             <>
-              <div>Map coming soon — no API key set</div>
+              <div>Map coming soon</div>
               <div className="small fw-normal mt-1" style={{ color: "#8a7a2a" }}>
-                Waiting on API Key
+                Waiting on API Key Cmon Caden
               </div>
             </>
           )}
