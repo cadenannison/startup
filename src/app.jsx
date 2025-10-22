@@ -8,10 +8,11 @@ import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login.jsx';
 import { Games } from './games/games.jsx';
 import { Info } from './info/info.jsx';
+import { AuthState } from './auth/authState.js';
 
 export default function App() {
-  const [username] = useState('Guest'); // replace with real auth later
-
+  const [userName, setUserName] = React.useState('Guest');
+  const [authState, setAuthState] = React.useState(AuthState.Unknown);
   return (
     <BrowserRouter>
     <div className="d-flex flex-column min-vh-100">
