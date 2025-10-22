@@ -97,12 +97,14 @@ export function Games() {
               <div className="row g-3">
                 <div className="col-12 col-md-4">
                   <label htmlFor="act-location" className="form-label visually-hidden">Location</label>
-                  <input className="form-control" id="act-location" name="location" placeholder="Location" required />
+                  <input className="form-control" id="act-location" name="location" placeholder="Location" required value={form.location}
+                    onChange={update('location')}/>
                 </div>
 
                 <div className="col-12 col-md-5">
                   <label htmlFor="act-text" className="form-label visually-hidden">Sport</label>
-                  <input className="form-control" id="act-text" name="text" placeholder="Sport" required />
+                  <input className="form-control" id="act-text" name="text" placeholder="Sport" required value={form.text}
+                    onChange={update('text')}/>
                 </div>
 
                 <div className="col-12">
@@ -113,16 +115,26 @@ export function Games() {
                     name="comment"
                     rows="2"
                     placeholder="Comment (optional)"
+                    value={form.comment}
+                    onChange={update('comment')}
                   ></textarea>
                 </div>
 
                 <div className="col-6 col-md-2">
                   <label htmlFor="act-username" className="form-label visually-hidden">Username</label>
-                  <input className="form-control" id="act-username" name="username" placeholder="Username" defaultValue="Caden" />
+                  <input className="form-control" id="act-username" name="username" placeholder="Username" value={form.username}
+                    onChange={update('username')}/>
                 </div>
 
                 <div className="col-6 col-md-1 d-grid">
-                  <button className="btn btn-success" type="button">Add</button>
+                  <button
+                    className="btn btn-success"
+                    type="button"
+                    onClick={handleAdd}
+                    disabled={adding || !form.location.trim() || !form.text.trim()}
+                  >
+                    {adding ? 'Adding…' : 'Add'}
+                  </button>
                 </div>
               </div>
             </form>
@@ -139,10 +151,36 @@ export function Games() {
               Activity feed
             </div>
             <div className="feed flex-grow-1 overflow-auto">
-              <p className="text-muted m-0 p-3 text-center" data-empty-hint>
-                No activities yet!
-              </p>
-              <ul className="list-group list-group-flush" id="activity-list"></ul>
+              {activities.length === 0 ? (
+                <p className="text-muted m-0 p-3 text-center" data-empty-hint>
+                  No activities yet!
+                </p>
+              ) : (
+                <ul className="list-group list-group-flush" id="activity-list">
+                  {activities.map((a) => (
+                    <li key={a.id} className="list-group-item">
+                      <div className="d-flex justify-content-between align-items-start">
+                        <div className="me-3">
+                          <div>
+                            <strong>{a.text}</strong> at {a.location}
+                            {a.comment ? <span className="text-muted"> — {a.comment}</span> : null}
+                          </div>
+                          <div className="small text-muted">
+                            by {a.username} • {formatWhen(a.createdAt)}
+                          </div>
+                        </div>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => handleDelete(a.id)}
+                          aria-label={`Delete ${a.text} at ${a.location}`}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>
