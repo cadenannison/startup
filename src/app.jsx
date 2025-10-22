@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-dom';
 import { Login } from './login/login.jsx';
 import { Games } from './games/games.jsx';
 import { Info } from './info/info.jsx';
@@ -13,6 +13,22 @@ import { AuthState } from './auth/authState.js';
 export default function App() {
   const [userName, setUserName] = React.useState('Guest');
   const [authState, setAuthState] = React.useState(AuthState.Unknown);
+
+  React.useEffect(() => {
+    const saved = localStorage.getItem('userName');
+    if (saved) {
+      setUserName(saved);
+      setAuthState(AuthState.Authenticated);
+    } else {
+      setAuthState(AuthState.Unauthenticated);
+    }
+  }, []);
+
+  function onAuthChange(newUserName, newState) {
+    setUserName(newUserName || 'Guest');
+    setAuthState(newState);
+  }
+
   return (
     <BrowserRouter>
     <div className="d-flex flex-column min-vh-100">
