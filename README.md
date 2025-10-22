@@ -103,8 +103,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [X] **All functionality implemented or mocked out** - In terms of functionality I worked on implementing the Login feature to retain the authentication when I'm inside the application. This will automatically hide or show the Games page which enables functionality. Then I worked on making a placeholder for the google maps API and getting it set up for later on once I get an API key and wire it in. I then added functionality within the actual activity creation sheet, so now users can create activties which are now displayed below the Activty Feed in cards. These cards are scrollable and are linked to the activity creation form. I also created a deletion button and unique ID system for each of these Activity Cards. 
+- [X] **Hooks** - With webhooks I was able to implement various hooks within my games.jsx file. Primarily this serves to track and pull information from the form to be implemented within the activity cards. This is done with useState. Then I used useEffect to provide a list of the current activities in activity feed from the users local storage. Whenever the activities change, I use the useEffect hook to update the local storage and eventually the UI. 
 
 ## 🚀 Service deliverable
 
