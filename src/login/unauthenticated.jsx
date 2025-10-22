@@ -12,7 +12,7 @@ export function Unauthenticated(props) {
       setDisplayError('Please enter an email and password.');
       return;
     }
-    // TODO: replace with real auth call later
+
     localStorage.setItem('userName', userName);
     props.onLogin(userName);
   }
@@ -22,7 +22,7 @@ export function Unauthenticated(props) {
       setDisplayError('Please enter an email and password.');
       return;
     }
-    // TODO: replace with real signup call later
+
     localStorage.setItem('userName', userName);
     props.onLogin(userName);
   }
