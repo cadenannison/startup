@@ -2,9 +2,10 @@ import React from 'react';
 import MapBox from './mapBox';
 import './map.css';
 
+const STORAGE_KEY = 'rap.activities.v1';
 
 export function Games() {
-  
+
   const [form, setForm] = React.useState({
     location: '',
     text: '',
@@ -12,8 +13,27 @@ export function Games() {
     username: localStorage.getItem('userName') || 'Guest',
   });
   const [adding, setAdding] = React.useState(false);
+  const [activities, setActivities] = React.useState([]);
 
   const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setActivities(parsed);
+      }
+    } catch {}
+  }, []);
+
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
+    } catch {}
+  }, [activities]);
+
+  
 
   return (
     <main>
