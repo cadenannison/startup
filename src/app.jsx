@@ -8,7 +8,7 @@ import { BrowserRouter, NavLink, Route, Routes, Navigate } from 'react-router-do
 import { Login } from './login/login.jsx';
 import { Games } from './games/games.jsx';
 import { Info } from './info/info.jsx';
-import { AuthState } from './auth/authState.js';
+import { AuthState } from './login/authState.js';
 
 export default function App() {
   const [userName, setUserName] = React.useState('Guest');
