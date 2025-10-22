@@ -7,10 +7,14 @@ export function Games() {
       <div className="container my-4 cards-grid">
         <div className="card mb-4" id="map-card">
           <div className="card-header">Locations</div>
-          <div className="card-body text-center">
-            <MapBox height="360px" /> 
+          {/* remove text-center so the map can fill edge-to-edge */}
+          <div className="card-body p-0">
+            <div style={{ height: 360 }}>
+              <MapBox height="100%" />
+            </div>
           </div>
         </div>
+
 
         <div className="card" id="activity-card">
           <div className="card-header d-flex justify-content-between align-items-center">

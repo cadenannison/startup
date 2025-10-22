@@ -62,12 +62,13 @@ export default function MapBox({
 
   return (
     <div
-      ref={containerRef}
-      style={{ height, width: "100%" }}
-      className="position-relative"
-      id="map"
-      aria-label="Map"
+    ref={containerRef}
+    style={{ height, width: "100%" }} 
+    className="position-relative"
+    id="map"
+    aria-label="Map"
     >
+  
       {status !== "ready" && (
         <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-body-tertiary text-muted">
           {status === "no-key" ? "Map coming soon (no API key set)" :
