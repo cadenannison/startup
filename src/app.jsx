@@ -36,7 +36,10 @@ export default function App() {
         <div className="container header-top">
           <h1 className="site-title m-0">Rise and Play</h1>
           <div id="user-info" className="user-info">
-            Logged in as:&nbsp;<span id="username" className="username">{username}</span>
+            Logged in as:&nbsp;
+            <span id="username" className="username">
+              {authState === AuthState.Authenticated ? userName : 'Guest'}
+            </span>
           </div>
         </div>
 
@@ -57,19 +60,19 @@ export default function App() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                    <NavLink className="nav-link" to="">
-                        Login
-                    </NavLink>
-                    </li>
-                    <li className="nav-item">
-                    <NavLink className="nav-link" to="games">
-                        games
-                    </NavLink>
-                    </li>
-                    <li className="nav-item">
-                    <NavLink className="nav-link" to="info">
-                        Info
-                    </NavLink>
+                  <NavLink className="nav-link" to="/" end>
+                    Login
+                  </NavLink>
+                </li>
+                {authState === AuthState.Authenticated && (
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/games">Games</NavLink>
+                </li>
+                )}
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/info">
+                    Info
+                  </NavLink>
                 </li>
                 {/* <li className="nav-item">
                   <NavLink className="nav-link" to="">
@@ -89,8 +92,8 @@ export default function App() {
       </header>
 
       <Routes>
-        <Route path='/' element={<Login />} exact />
-        <Route path='/games' element={<Games />} />
+        <Route path="/" element={<Login userName={userName} authState={authState} onAuthChange={onAuthChange} />} />
+        <Route path="/games" element={authState === AuthState.Authenticated ? <Games /> : <Navigate to="/" replace />} />
         <Route path='/info' element={<Info />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
