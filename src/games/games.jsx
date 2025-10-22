@@ -188,3 +188,12 @@ export function Games() {
     </main>
   );
 }
+
+function safeId() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return 'id-' + Math.random().toString(36).slice(2);
+}
+
+function formatWhen(iso) {
+  try { return new Date(iso).toLocaleString(); } catch { return ''; }
+}
