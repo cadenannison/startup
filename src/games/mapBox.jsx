@@ -62,18 +62,33 @@ export default function MapBox({
 
   return (
     <div
-    ref={containerRef}
-    style={{ height, width: "100%" }} 
-    className="position-relative"
-    id="map"
-    aria-label="Map"
+      ref={containerRef}
+      style={{ height, minHeight: 240, width: "100%", background: "#f8f9fa" }} // 👈 bg helps confirm size
+      className="position-relative"
+      id="map"
+      aria-label="Map"
     >
   
       {status !== "ready" && (
-        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-body-tertiary text-muted">
-          {status === "no-key" ? "Map coming soon (no API key set)" :
-           status === "loading" ? "Loading map…" :
-           "Map failed to load"}
+        <div
+          className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center fw-semibold"
+          style={{
+            zIndex: 2,                 // make sure it's on top
+            background: "#fffbe6",     // pale yellow
+            color: "#6b5900",
+            borderTop: "1px solid rgba(0,0,0,.08)"
+          }}
+        >
+          {status === "no-key" && (
+            <>
+              <div>Map coming soon — no API key set</div>
+              <div className="small fw-normal mt-1" style={{ color: "#8a7a2a" }}>
+                Waiting on API Key
+              </div>
+            </>
+          )}
+          {status === "loading" && <div>Loading map…</div>}
+          {status === "error" && <div>Map failed to load</div>}
         </div>
       )}
     </div>

@@ -1,5 +1,7 @@
 import React from 'react';
 import MapBox from './mapBox';
+import './map.css';
+
 
 export function Games() {
   return (
@@ -7,14 +9,12 @@ export function Games() {
       <div className="container my-4 cards-grid">
         <div className="card mb-4" id="map-card">
           <div className="card-header">Locations</div>
-          {/* remove text-center so the map can fill edge-to-edge */}
           <div className="card-body p-0">
-            <div style={{ height: 360 }}>
+            <div className="map-wrap">
               <MapBox height="100%" />
             </div>
           </div>
         </div>
-
 
         <div className="card" id="activity-card">
           <div className="card-header d-flex justify-content-between align-items-center">
