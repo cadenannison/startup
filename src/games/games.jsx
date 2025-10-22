@@ -5,7 +5,6 @@ import './map.css';
 const STORAGE_KEY = 'rap.activities.v1';
 
 export function Games() {
-
   const [form, setForm] = React.useState({
     location: '',
     text: '',
@@ -33,7 +32,38 @@ export function Games() {
     } catch {}
   }, [activities]);
 
-  
+  async function handleAdd() {
+    const location = form.location.trim();
+    const text = form.text.trim();
+    if (!location || !text) return;
+
+    setAdding(true);
+    try {
+      const activity = {
+        id: safeId(),
+        location,
+        text,
+        comment: form.comment.trim(),
+        username: (form.username || '').trim() || 'Guest',
+        createdAt: new Date().toISOString(),
+      };
+
+      setActivities((list) => [activity, ...list]);
+      setForm((f) => ({ ...f, text: '', comment: '' }));
+
+      const el = document.getElementById('newActivityForm');
+      if (el && window.bootstrap) {
+        const inst = window.bootstrap.Collapse.getOrCreateInstance(el, { toggle: false });
+        inst.hide();
+      }
+    } finally {
+      setAdding(false);
+    }
+  }
+
+  function handleDelete(id) {
+    setActivities((list) => list.filter((a) => a.id !== id));
+  }
 
   return (
     <main>
