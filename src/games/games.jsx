@@ -4,6 +4,17 @@ import './map.css';
 
 
 export function Games() {
+  
+  const [form, setForm] = React.useState({
+    location: '',
+    text: '',
+    comment: '',
+    username: localStorage.getItem('userName') || 'Guest',
+  });
+  const [adding, setAdding] = React.useState(false);
+
+  const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
   return (
     <main>
       <div className="container my-4 cards-grid">
