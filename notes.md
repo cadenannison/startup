@@ -598,6 +598,61 @@ const btn = document.getElementById('btn');
 btn.addEventListener('click', () => console.log('Clicked!'));
 Behavior: When user clicks the element with id 'btn', the callback runs and prints 'Clicked!'.
 
+**App-level Auth State**  
+```jsx
+const [userName, setUserName] = React.useState('Guest');
+const [authState, setAuthState] = React.useState(AuthState.Unknown);
+```  
+
+**Hydrate Auth From localStorage**  
+```jsx
+React.useEffect(() => {
+  const saved = localStorage.getItem('userName');
+  if (saved) {
+    setUserName(saved);
+    setAuthState(AuthState.Authenticated);
+  } else {
+    setAuthState(AuthState.Unauthenticated);
+  }
+}, []);
+```  
+Runs once on mount to detect existing sessions. If a username exists in `localStorage`, the user is treated as logged in.
+
+**Header Username Display**  
+```jsx
+<span className="username">
+  {authState === AuthState.Authenticated ? userName : 'Guest'}
+</span>
+```  
+Shows the active username only when authenticated; otherwise falls back to “Guest”.
+
+```jsx
+<Route
+  path="/games"
+  element={authState === AuthState.Authenticated ? <Games /> : <Navigate to="/" replace />}
+/>
+```  
+Blocks access to the `/games` page unless authenticated; unauthenticated users are redirected to the login route.
+
+**Games Page Integration**  
+```jsx
+import MapBox from './mapBox';
+import './map.css';
+
+<div className="card" id="map-card">
+  <div className="card-header">Locations</div>
+  <div className="card-body p-0">
+    <div className="map-wrap">
+      <MapBox />
+    </div>
+  </div>
+</div>
+```  
+Places the `MapBox` component inside the “Locations” card with padding removed so the map fills the card body edge-to-edge.
+
+
+Stores the current user’s name and authentication status in the top-level `App` component so it can be shared across routes.
+
 EventListener: Waits for a event
 GetElementById: select a specfic element by the ID tag in the HTML file
 
