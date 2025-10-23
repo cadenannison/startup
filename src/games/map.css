@@ -1,0 +1,14 @@
+#map-card {
+  overflow: hidden;
+}
+
+#map-card .card-body .map-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: clamp(240px, 35vh, 420px); 
+  min-height: 240px;
+  overflow: hidden;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
