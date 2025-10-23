@@ -56,9 +56,9 @@ This part is fairly difficult:
   </script>
 '''
 It essentially creates a class that is accesable by javascript so that I can update the username once somebody logs in. 
-
-<h1> - this makes the text bigger or smaller as you increase the number after h
-
+'''
+<h1></h1>- this makes the text bigger or smaller as you increase the number after h
+'''
 <nav class="navbar navbar-expand-md navbar-dark bg-dark"> – this is bootstrap again and it makes a nav bar dark colored.
 
 <div class="container"> – Bootstrap container. Honestly bootstrap is super helpful
