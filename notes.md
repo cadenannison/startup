@@ -386,6 +386,199 @@ then change package.json within the script:
 
 ## JavaScript
 
+const [form, setForm] = React.useState({ location: '', text: '', comment: '' });
+
+useState creates state inside a function component. form is the current value; setForm updates it. The initial state is an object with three fields used by form inputs.
+
+**useState for Form Data**  
+```
+const [form, setForm] = React.useState({ location: '', text: '', comment: '' });
+```
+`useState` creates a piece of state inside a React component. `form` is the current value, and `setForm` is the function used to update it. The object contains the initial state for form fields.
+
+**Updating Form Fields**  
+```
+const update = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }));
+```
+This function updates a specific field inside the form. It takes the previous state (`prev`), spreads its contents (`...prev`), and replaces just the targeted field using the latest input value from `e.target.value`.
+
+**Controlled Input Example**  
+```
+<input value={form.location} onChange={update('location')} />
+```
+This makes the input a “controlled component.” Its value always comes from React state, ensuring whats displayed matches the data the app manages.
+
+**Managing a List of Activities**  
+```
+const [activities, setActivities] = React.useState([]);
+```
+Stores all user-created activities. The `setActivities` function updates this list whenever new activities are added or removed.
+
+
+**Temporary UI Flags**  
+```
+const [adding, setAdding] = React.useState(false);
+```
+Tracks whether a submission is currently in progress, useful for disabling buttons or showing loading indicators.
+
+
+**Handle Add Function**  
+```
+async function handleAdd() {}
+```
+Defines what happens when a user clicks the Add button. It validates form data, creates a new activity object, and updates the activities list.
+
+
+**Basic Input Validation**  
+```
+const location = form.location.trim(); const text = form.text.trim();
+if (!location || !text) return;
+```
+Checks that the `location` and `text` fields aren’t empty before submitting. `.trim()` removes whitespace so like `"   "` don’t pass validation.
+
+
+**Add Button Guard**  
+```
+setAdding(true);
+try { /* add logic */ } finally { setAdding(false); }
+```
+Prevents multiple submissions by setting a temporary “adding” state before and after the action
+
+**Creating an Activity Object**  
+```
+const activity = {
+  id: safeId(),
+  location,
+  text,
+  comment: form.comment.trim(),
+  username: (form.username || '').trim() || 'Guest',
+  createdAt: new Date().toISOString(),
+};
+```
+Builds a single activity record containing user input, a unique ID, and a timestamp. This is stored inside `activities` state.
+
+**Updating the List**  
+```
+setActivities(prev => [activity, ...prev]);
+```
+Adds the new activity to the top of the list. Using the functional form ensures React uses the most recent state.
+
+**Resetting Form Fields**  
+```
+setForm(f => ({ ...f, text: '', comment: '' }));
+```
+Clears selected fields after submission but keeps others like location and username intact
+
+**Closing the Bootstrap Collapse Form**  
+```
+const el = document.getElementById('newActivityForm');
+if (el && window.bootstrap) window.bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).hide();
+```
+hides the Bootstrap collapsible section after submitting the form
+
+**Deleting Activities**  
+```
+function handleDelete(id) {
+  setActivities(prev => prev.filter(a => a.id !== id));
+}
+```
+Removes an item from the activity list without mutating the array directly. The `.filter()` method creates a new array excluding the deleted item.
+
+**Local Storage Key**  
+```
+const STORAGE_KEY = 'rap.activities.v1';
+```
+Defines a single constant for `localStorage` key. Including `.v1` makes it easy to change data formats later without overwriting old data.
+
+**useEffect for Loading Data**  
+```
+React.useEffect(() => {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) setActivities(parsed);
+  }
+}, []);
+```
+Loads any previously saved activities from `localStorage` the first time the component mounts. The empty dependency array `[]` means this runs only once.
+
+**useEffect for Saving Data**  
+```
+React.useEffect(() => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
+}, [activities]);
+```
+Saves the activities array to `localStorage` whenever it changes. The `[activities]` dependency ensures this runs only when new activities are added or removed.
+
+**Rendering the List**  
+```
+<ul>
+  {activities.map(a => (
+    <li key={a.id}>{a.text} at {a.location}</li>
+  ))}
+</ul>
+```
+Loops over the `activities` array with `.map()` to display each item. Each `<li>` has a unique `key` for efficient rendering.
+
+**Generating Unique IDs**  
+```
+function safeId() {
+  return crypto.randomUUID?.() || 'id-' + Math.random().toString(36).slice(2);
+}
+```
+Creates a unique identifier for each activity. Uses `crypto.randomUUID()` if available, or a random fallback string.
+
+**Formatting Timestamps**  
+```
+function formatWhen(iso) {
+  return new Date(iso).toLocaleString();
+}
+```
+Converts ISO timestamps into human readable local time strings for displaying when activities were created.
+
+**Add Button Example**  
+```
+<button
+  type="button"
+  onClick={handleAdd}
+  disabled={adding || !form.location.trim() || !form.text.trim()}>
+  {adding ? 'Adding…' : 'Add'}
+</button>
+```
+Calls `handleAdd` when clicked. Disables itself if required fields are empty or if a submission is already in progress.
+
+**useEffect Syntax Overview**  
+```
+React.useEffect(() => { /* ... */ }, []);
+```
+The first argument is a function that runs after rendering. The second argument, the dependency array, controls when the effect runs. An empty array means it runs only once.
+
+**Dependency-Based useEffect**  
+```
+React.useEffect(() => { /* ... */ }, [activities]);
+```
+Runs the callback every time the `activities` array changes. This is how the component reacts automatically to updates in data.
+
+**Scrollable Feed**  
+```
+<div className="feed flex-grow-1 overflow-auto">…</div>
+```
+Uses Bootstrap utility classes to make the activity feed scrollable when it overflows its container.
+
+**Controlled Username Field**  
+```
+<input value={form.username} onChange={update('username')} />
+```
+Keeps the username field synchronized with React state, allowing it to display the user’s name or default to “Guest.”
+
+**Preventing Default Form Submit**  
+```
+<form onSubmit={(e) => e.preventDefault()} noValidate>…</form>
+```
+Stops the browser from refreshing the page on form submission, allowing React to handle everything.
+
+
+**Arrow Functions**
 Arrow functions are a compact function syntax. (a, b) => a + b means a function with parameters a and b that
 returns a+b.
 Examples:
