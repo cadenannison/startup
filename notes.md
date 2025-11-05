@@ -198,7 +198,7 @@ chmod +x ./deployFiles.sh
 
 **To deploy to my production environment I had to run:**
 
-./deployReact.sh \ -k ~/.ssh/production.pem \ -h riseandplay.click \ -s startup
+./deployService.sh -k ~/.ssh/production.pem -h riseandplay.click -s simon
 
 that way I could gain access to my production.pem
 
