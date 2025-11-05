@@ -1,5 +1,5 @@
 {
-  "name": "riseandplay-service",
+  "name": "riseandplay",
   "version": "1.0.0",
   "description": "Backend for Rise & Play",
   "main": "index.js",
