@@ -13,23 +13,42 @@ export function Games() {
   });
   const [adding, setAdding] = React.useState(false);
   const [activities, setActivities] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
 
   const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   React.useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) setActivities(parsed);
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError('');
+      try {
+        const resp = await fetch('/api/activities');
+        if (!resp.ok) throw new Error('Failed to load activities');
+        const list = await resp.json();
+        if (!cancelled) {
+          setActivities(list);
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch {}
+        }
+      } catch {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const parsed = raw ? JSON.parse(raw) : [];
+          if (!cancelled && Array.isArray(parsed)) setActivities(parsed);
+        } catch {}
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-    } catch {}
+    }
+
+    load();
+    return () => { cancelled = true; };
   }, []);
 
   React.useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(activities));
-    } catch {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(activities)); } catch {}
   }, [activities]);
 
   async function handleAdd() {
@@ -38,6 +57,7 @@ export function Games() {
     if (!location || !text) return;
 
     setAdding(true);
+    setError('');
     try {
       const activity = {
         id: safeId(),
@@ -49,20 +69,41 @@ export function Games() {
       };
 
       setActivities((list) => [activity, ...list]);
-      setForm((f) => ({ ...f, text: '', comment: '' }));
+
+      const resp = await fetch('/api/activities', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(activity),
+      });
+
+      if (!resp.ok) {
+        setActivities((list) => list.filter((a) => a.id !== activity.id));
+        if (resp.status === 401) setError('You must be logged in to add activities.');
+        else setError('Failed to add activity.');
+        return;
+      }
 
       const el = document.getElementById('newActivityForm');
       if (el && window.bootstrap) {
         const inst = window.bootstrap.Collapse.getOrCreateInstance(el, { toggle: false });
         inst.hide();
       }
+      setForm((f) => ({ ...f, text: '', comment: '' }));
     } finally {
       setAdding(false);
     }
   }
 
-  function handleDelete(id) {
+  async function handleDelete(id) {
+    const prev = activities;
     setActivities((list) => list.filter((a) => a.id !== id));
+    try {
+      const resp = await fetch(`/api/activities/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (!resp.ok) throw new Error();
+    } catch {
+      setActivities(prev);
+      setError('Failed to delete activity (are you logged in?)');
+    }
   }
 
   return (
@@ -97,14 +138,28 @@ export function Games() {
               <div className="row g-3">
                 <div className="col-12 col-md-4">
                   <label htmlFor="act-location" className="form-label visually-hidden">Location</label>
-                  <input className="form-control" id="act-location" name="location" placeholder="Location" required value={form.location}
-                    onChange={update('location')}/>
+                  <input
+                    className="form-control"
+                    id="act-location"
+                    name="location"
+                    placeholder="Location"
+                    required
+                    value={form.location}
+                    onChange={update('location')}
+                  />
                 </div>
 
                 <div className="col-12 col-md-5">
                   <label htmlFor="act-text" className="form-label visually-hidden">Sport</label>
-                  <input className="form-control" id="act-text" name="text" placeholder="Sport" required value={form.text}
-                    onChange={update('text')}/>
+                  <input
+                    className="form-control"
+                    id="act-text"
+                    name="text"
+                    placeholder="Sport"
+                    required
+                    value={form.text}
+                    onChange={update('text')}
+                  />
                 </div>
 
                 <div className="col-12">
@@ -122,8 +177,14 @@ export function Games() {
 
                 <div className="col-6 col-md-2">
                   <label htmlFor="act-username" className="form-label visually-hidden">Username</label>
-                  <input className="form-control" id="act-username" name="username" placeholder="Username" value={form.username}
-                    onChange={update('username')}/>
+                  <input
+                    className="form-control"
+                    id="act-username"
+                    name="username"
+                    placeholder="Username"
+                    value={form.username}
+                    onChange={update('username')}
+                  />
                 </div>
 
                 <div className="col-6 col-md-1 d-grid">
@@ -137,6 +198,7 @@ export function Games() {
                   </button>
                 </div>
               </div>
+              {error && <div className="text-danger mt-2">{error}</div>}
             </form>
           </div>
 
@@ -148,7 +210,7 @@ export function Games() {
             aria-label="Activities list"
           >
             <div className="px-3 py-2 border-top bg-body-tertiary small text-muted">
-              Activity feed
+              Activity feed{loading ? ' (loading...)' : ''}
             </div>
             <div className="feed flex-grow-1 overflow-auto">
               {activities.length === 0 ? (
