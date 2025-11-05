@@ -1,30 +1,49 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { MessageDialog } from './messageDialog.jsx';
+import { MessageDialog } from './messageDialog.jsx'; 
 
 export function Unauthenticated(props) {
   const [userName, setUserName] = React.useState(props.userName || '');
   const [password, setPassword] = React.useState('');
   const [displayError, setDisplayError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   async function loginUser() {
-    if (!userName || !password) {
-      setDisplayError('Please enter an email and password.');
-      return;
-    }
-
-    localStorage.setItem('userName', userName);
-    props.onLogin(userName);
+    await loginOrCreate('/api/auth/login');
   }
 
   async function createUser() {
+    await loginOrCreate('/api/auth/create');
+  }
+
+  async function loginOrCreate(endpoint) {
     if (!userName || !password) {
       setDisplayError('Please enter an email and password.');
       return;
     }
+    setLoading(true);
+    try {
+      const resp = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: userName, password }),
+      });
+      if (resp.ok) {
+        localStorage.setItem('userName', userName);
+        props.onLogin(userName);
+      } else {
+        const body = await safeJson(resp);
+        setDisplayError(`⚠ Error: ${body?.msg || resp.statusText}`);
+      }
+    } catch {
+      setDisplayError('Network error. Is the backend running on :4000?');
+    } finally {
+      setLoading(false);
+    }
+  }
 
-    localStorage.setItem('userName', userName);
-    props.onLogin(userName);
+  async function safeJson(r) {
+    try { return await r.json(); } catch { return null; }
   }
 
   return (
@@ -55,11 +74,11 @@ export function Unauthenticated(props) {
           />
         </div>
 
-        <Button variant="primary" onClick={loginUser} disabled={!userName || !password}>
-          Login
+        <Button variant="primary" onClick={loginUser} disabled={loading || !userName || !password}>
+          {loading ? 'Working…' : 'Login'}
         </Button>{' '}
-        <Button variant="secondary" onClick={createUser} disabled={!userName || !password}>
-          Create
+        <Button variant="secondary" onClick={createUser} disabled={loading || !userName || !password}>
+          {loading ? 'Working…' : 'Create'}
         </Button>
       </div>
 
