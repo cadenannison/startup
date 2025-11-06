@@ -81,8 +81,8 @@ api.delete('/auth/logout', (req, res) => {
   res.status(204).end();
 });
 
-api.get('/profile', requireAuth, (req, res) => {
-  res.send({ email: req.user.email });
+api.get('/activities', requireAuth, (_req, res) => {
+  res.send(activities);
 });
 
 api.get('/activities', (_req, res) => {
