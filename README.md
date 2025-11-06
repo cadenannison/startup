@@ -110,12 +110,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - 
-- [ ] **Static middleware for frontend** - 
-- [ ] **Calls to third party endpoints** - 
-- [ ] **Backend service endpoints** - 
-- [ ] **Frontend calls service endpoints** - 
-- [ ] **Supports registration, login, logout, and restricted endpoint** - 
+- [X] **Node.js/Express HTTP service** - In my service directory I added an index.js file where I intiialized Express and Node and started listening on port 4000. I also added the middleware with app.use() to get the json files and parse cookies. 
+- [X] **Static middleware for frontend** - Within my index.js file I added app.use(express.static('public')); and app.use((_req, res) => {res.sendFile('index.html', { root: 'public' }); in order to host on the front end so that Service will manage the static files in production. 
+- [X] **Calls to third party endpoints** - I have a google maps api call on the games map. I created an api key and have included it in .env, which maintains it and allows me to pull in the google maps info and box through my mapBox.jsx. 
+- [X] **Backend service endpoints** - I've built out in index.js under const api = express.Router(); app.use('/api', api); json endpoints that return and accept data. This includes both authentication and the user profile. I also have endpoints for managing the games page which will only allow posting and deleting activties when the user is logged in. 
+- [X] **Frontend calls service endpoints** - During the log in process unauthenticated.jsx and authenticated.jsx both make calls to the back end with fetch to login and logout. I also made it so the game page UI makes a call to retrieve the list and then functions for both posting and deleting activity cards. (games.jsx)
+- [X] **Supports registration, login, logout, and restricted endpoint** - For backend within index.jsx I made a create user registration function which also sets a cookie using setAuthCookie for login and verification. This also includes the logout function in authenticated.jsx which flips the state to unathenticated. In the games.jsx then there are get, post, and delete calls which are restricted to users who are signed in. As of now users who are not verified through the login process will have read only access on the activities page. 
 
 ## 🚀 DB deliverable
 
