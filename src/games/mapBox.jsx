@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 
+console.log('VITE_GMAPS_KEY present?', !!import.meta.env?.VITE_GMAPS_KEY);
+console.log('VITE_GMAPS_KEY prefix:', String(import.meta.env?.VITE_GMAPS_KEY || '').slice(0, 8));
+
+
 const BROWSER_KEY =
   (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.VITE_GMAPS_KEY) || "";
 
@@ -56,33 +60,33 @@ export default function MapBox({
   }, [center.lat, center.lng, zoom]);
 
   return (
-    <div
-      ref={containerRef}
-      style={{ position: "absolute", inset: 0 }} 
-      id="map"
-      aria-label="Map"
-    >
-      {status !== "ready" && (
+    <div style={{ position: 'relative', height }} aria-label="Map wrapper">
+      {/* The map lives here; React never renders children into this node */}
+      <div ref={containerRef} style={{ position: 'absolute', inset: 0 }} aria-hidden="true" />
+
+      {/* Overlay is a sibling, not a child of the map container */}
+      {status !== 'ready' && (
         <div
           className="d-flex flex-column align-items-center justify-content-center fw-semibold"
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
             zIndex: 2,
-            background: "#fffbe6",
-            color: "#6b5900"
+            background: '#fffbe6',
+            color: '#6b5900',
+            pointerEvents: 'none', // overlay is informational only
           }}
         >
-          {status === "no-key" && (
+          {status === 'no-key' && (
             <>
               <div>Map coming soon</div>
-              <div className="small fw-normal mt-1" style={{ color: "#8a7a2a" }}>
+              <div className="small fw-normal mt-1" style={{ color: '#8a7a2a' }}>
                 Waiting on API Key Cmon Caden
               </div>
             </>
           )}
-          {status === "loading" && <div>Loading map…</div>}
-          {status === "error" && <div>Map failed to load</div>}
+          {status === 'loading' && <div>Loading map…</div>}
+          {status === 'error' && <div>Map failed to load</div>}
         </div>
       )}
     </div>
