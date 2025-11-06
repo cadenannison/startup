@@ -740,3 +740,147 @@ sudo - run as admin
 
 ls -la lists all files (including hidden) in long format
 
+## Backend / Express
+
+**Express Static Middleware**  
+`app.use(express.static('public'));`  
+Helps built frontend files (after `npm run build`) directly from the backend. Lets Express act as both the web server and API host.
+
+
+**Router Namespace**  
+`app.use('/api', api);`  
+Groups backend routes under `/api`, preventing conflicts with frontend URLs and keeping code organized.
+
+**Environment Variables (.env)**  
+`VITE_GMAPS_KEY=Key`  
+Stores private keys like your Google Maps API key securely. The `VITE_` prefix exposes it safely to the frontend during build.
+
+**Require Auth Middleware**  
+```js
+function requireAuth(req, res, next) {
+  const token = req.cookies['rap_token'];
+  const user = users.find(u => u.token === token);
+  if (!user) return res.status(401).send({ msg: 'Unauthorized' });
+  req.user = user;
+  next();
+}
+```  
+Protects routes by checking for a valid auth cookie. Ensures only logged in users can access restricted endpoints
+
+**Set Auth Cookie**  
+```js
+res.cookie('rap_token', token, {
+  httpOnly: true,
+  sameSite: 'strict',
+  secure: process.env.NODE_ENV !== 'development',
+});
+```  
+Sends a secure cookie containing the session token. Keeps user sessions
+
+**User Registration (bcrypt + uuid)**  
+```js
+const passwordHash = await bcrypt.hash(password, 10);
+const user = { email, password: passwordHash, token: uuid.v4() };
+```  
+Hashes passwords before saving and uses `uuid` to generate unique session tokens for each login. This would ve a form of security
+
+**Restricted Endpoint Example**  
+```js
+api.get('/activities', requireAuth, (_req, res) => {
+  res.send(activities);
+});
+```  
+Requires authentication to access data. Demonstrates how `requireAuth` locks down sensitive routes
+
+**Error Handling Middleware**  
+```js
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.status(500).send({ type: err.name, message: err.message });
+});
+```  
+Gets unexpected server errors and sends a safe JSOn response instead of crashing the app.
+
+**Health Check Endpoint**  
+```js
+api.get('/health', (_req, res) => res.send({ ok: true }));
+```  
+I can use this for testing server
+
+## Frontend / React
+
+**Auth Fetch Requests**  
+```js
+fetch('/api/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password }),
+});
+```  
+Sends login credentials to the backend as JSON. Ensures the backend can parse and authenticate right
+
+**Auto Cookie Handling**  
+```js
+await fetch('/api/activities', { method: 'GET' });
+```  
+Automatically sends cookies for same origin requests
+
+**Proxy Configuration (Vite)**  
+```js
+export default defineConfig({
+  server: { proxy: { '/api': 'http://localhost:4000' } },
+});
+```  
+Forwards `/api` calls to the backend server on port 4000
+
+**Temporary UI Flags**  
+```js
+const [adding, setAdding] = React.useState(false);
+```  
+Tracks when an operation (adding a new activity) is in progress. Used to disable buttons / show loading text
+
+**Handle Add Function**  
+```js
+async function handleAdd() {}
+```  
+Defines how new activities are created. Handles validation, updates the activity list, and resets the form when complete
+
+**State Updates with useEffect**  
+```js
+React.useEffect(() => {
+  localStorage.setItem('key', JSON.stringify(data));
+}, [data]);
+```  
+Automatically stores updated state data in local storage. Keeps user data persistent across refreshes
+
+**Logout Handling**  
+```js
+fetch('/api/auth/logout', { method: 'DELETE' })
+  .finally(() => localStorage.removeItem('userName'));
+```  
+Ends a user’s session on both backend and frontend. Clears stored data and resets authentication state
+
+## Third-Party API Integration
+
+**Google Maps Loader**  
+```js
+const loader = new Loader({ apiKey: BROWSER_KEY, version: "weekly" });
+const { Map } = await google.maps.importLibrary("maps");
+```  
+Dynamically loads the Google Maps API and initializes an interactive map
+
+**Environment Security**  
+```bash
+# .gitignore
+.env
+```  
+Prevents `.env` (with API keys) from being committed to GitHub
+
+## Deployment / Production
+
+**Secure Cookie Toggle**  
+```js
+const isDev = process.env.NODE_ENV === 'development';
+secure: !isDev
+```  
+Enables HTTPS-only cookies in production automatically while allowing local testing in development
