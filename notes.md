@@ -202,6 +202,8 @@ chmod +x ./deployFiles.sh
 
 that way I could gain access to my production.pem
 
+1. Give access to the sh file then deploy to production enviroment 
+
 '''
 
 ## HTTPS
