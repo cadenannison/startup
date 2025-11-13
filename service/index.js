@@ -1,21 +1,15 @@
 const express = require('express');
-const DB = require('./database.js');
-
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
-
+const DB = require('./database.js'); 
 const app = express();
 const authCookieName = 'rap_token';
-
-let users = [];
-let activities = [];
 
 const port = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 4000;
 
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(express.static('public'));
 
 function setAuthCookie(res, authToken) {
@@ -30,19 +24,19 @@ function setAuthCookie(res, authToken) {
 
 async function findUser(field, value) {
   if (!value) return null;
-  return users.find((u) => u[field] === value);
+  return field === 'token' ? DB.getUserByToken(value) : DB.getUserByEmail(value);
 }
 
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = { email, password: passwordHash, token: uuid.v4() };
-  users.push(user);
+  await DB.createUser(user);
   return user;
 }
 
-function requireAuth(req, res, next) {
+async function requireAuth(req, res, next) {
   const token = req.cookies[authCookieName];
-  const user = users.find((u) => u.token === token);
+  const user = await findUser('token', token);
   if (!user) return res.status(401).send({ msg: 'Unauthorized' });
   req.user = user;
   next();
@@ -69,42 +63,40 @@ api.post('/auth/login', async (req, res) => {
   const user = await findUser('email', email);
   if (user && (await bcrypt.compare(password, user.password))) {
     user.token = uuid.v4();
+    await DB.updateUser(user);
     setAuthCookie(res, user.token);
     return res.send({ email: user.email });
   }
   res.status(401).send({ msg: 'Unauthorized' });
 });
 
-api.delete('/auth/logout', (req, res) => {
-  const token = req.cookies[authCookieName];
-  const user = users.find((u) => u.token === token);
-  if (user) delete user.token;
+api.delete('/auth/logout', async (req, res) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    delete user.token;
+    await DB.updateUser(user);
+  }
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
 
-api.get('/activities', requireAuth, (_req, res) => {
-  res.send(activities);
+api.get('/activities', async (_req, res) => {
+  const list = await DB.listActivities();
+  res.send(list);
 });
 
-api.get('/activities', (_req, res) => {
-  res.send(activities);
-});
-
-api.post('/activities', requireAuth, (req, res) => {
-  const { id, location, text, comment, username, createdAt } = req.body || {};
+api.post('/activities', requireAuth, async (req, res) => {
+  const { id, location, text, comment, username, createdAt, coords } = req.body || {};
   if (!id || !location || !text || !username || !createdAt) {
     return res.status(400).send({ msg: 'Invalid activity' });
   }
-  activities = [req.body, ...activities];
-  res.status(201).send(req.body);
+  await DB.addActivity({ id, location, text, comment, username, createdAt, coords: coords || null });
+  res.status(201).send({ ok: true });
 });
 
-api.delete('/activities/:id', requireAuth, (req, res) => {
-  const before = activities.length;
-  activities = activities.filter((a) => a.id !== req.params.id);
-  const removed = before !== activities.length;
-  res.status(removed ? 204 : 404).end();
+api.delete('/activities/:id', requireAuth, async (req, res) => {
+  const deleted = await DB.deleteActivity(req.params.id);
+  res.status(deleted ? 204 : 404).end();
 });
 
 app.use((err, _req, res, _next) => {
