@@ -121,8 +121,31 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [X] **Stores data in MongoDB** - I created my database with mongodb and using the username and password I was able to create a dbConfig.json file to store these credentials and then wire them into the database.js file to connect my backend calls to the database. I then changed my functions within database.js to include async functions that retrieve, store, and add information about the user and the activities form to the mongo database. I then edited the games.jsx file to use the api/activties call to the actual database instead of the local storage. I then verified this by looking at "data" on my database to see the json like objects stored there with the user data and the actvities forms. 
+- [X] **Stores credentials in MongoDB** - I use the api/auth/create call to create or verify the users information within the database which can then be checked or saved by using the DB. for the database. Ex: 
+
+fetch('/api/auth/create', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({ email: userName, password })
+});
+
+and I also added a hasher with bycript to add a layer of security to passwords before I stoer them in the database. 
+
+const passwordHash = await bcrypt.hash(password, 10);
+const user = { email, password: passwordHash, token: uuid.v4() };
+await DB.addUser(user);
+
+This appears in the database as something like:
+
+_id
+69155993b9fa6f8765f
+email
+"Caden"
+password
+"$2b$10$ha8NL/mMdyU1FxJVw078FOKNrbSq2bK6n0jO"
+token
+"0c10f79c-4c87-8486cad4b502"
 
 ## 🚀 WebSocket deliverable
 
