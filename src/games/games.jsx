@@ -108,7 +108,7 @@ export function Games() {
       setActivities(prev);
     }
   }
-
+// reverted to prev versino cuz it wasn't working
   return (
     <main>
       <div className="container my-4 cards-grid">
