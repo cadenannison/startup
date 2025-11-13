@@ -1,3 +1,4 @@
+// src/games/games.jsx
 import React from 'react';
 import MapBox from './mapBox';
 import './map.css';
@@ -13,43 +14,34 @@ export function Games() {
   });
   const [adding, setAdding] = React.useState(false);
   const [activities, setActivities] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
 
   const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   React.useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      setLoading(true);
-      setError('');
+    let ignore = false;
+    (async () => {
       try {
         const resp = await fetch('/api/activities');
-        if (!resp.ok) throw new Error('Failed to load activities');
-        const list = await resp.json();
-        if (!cancelled) {
-          setActivities(list);
-          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch {}
+        if (resp.status === 401) {
+          setError('You must be logged in to view activities.');
+          setActivities([]);
+          return;
         }
-      } catch {
+        if (!resp.ok) throw new Error(`Load failed (${resp.status})`);
+        const data = await resp.json();
+        if (!ignore) setActivities(data);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+      } catch (e) {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          const parsed = raw ? JSON.parse(raw) : [];
-          if (!cancelled && Array.isArray(parsed)) setActivities(parsed);
+          if (raw) setActivities(JSON.parse(raw));
         } catch {}
-      } finally {
-        if (!cancelled) setLoading(false);
+        setError('Showing cached activities (offline).');
       }
-    }
-
-    load();
-    return () => { cancelled = true; };
+    })();
+    return () => { ignore = true; };
   }, []);
-
-  React.useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(activities)); } catch {}
-  }, [activities]);
 
   async function handleAdd() {
     const location = form.location.trim();
@@ -76,33 +68,44 @@ export function Games() {
         body: JSON.stringify(activity),
       });
 
-      if (!resp.ok) {
+      if (resp.status === 401) {
+        setError('Login required to add activities.');
         setActivities((list) => list.filter((a) => a.id !== activity.id));
-        if (resp.status === 401) setError('You must be logged in to add activities.');
-        else setError('Failed to add activity.');
         return;
       }
+      if (!resp.ok) throw new Error(`Create failed (${resp.status})`);
 
       const el = document.getElementById('newActivityForm');
       if (el && window.bootstrap) {
         const inst = window.bootstrap.Collapse.getOrCreateInstance(el, { toggle: false });
         inst.hide();
       }
+
       setForm((f) => ({ ...f, text: '', comment: '' }));
+    } catch (e) {
+      setError(e.message || 'Failed to add activity.');
     } finally {
       setAdding(false);
     }
   }
 
   async function handleDelete(id) {
+    setError('');
     const prev = activities;
     setActivities((list) => list.filter((a) => a.id !== id));
     try {
-      const resp = await fetch(`/api/activities/${encodeURIComponent(id)}`, { method: 'DELETE' });
-      if (!resp.ok) throw new Error();
-    } catch {
+      const resp = await fetch(`/api/activities/${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      if (resp.status === 401) {
+        setError('Login required to delete.');
+        setActivities(prev); 
+        return;
+      }
+      if (resp.status !== 204) throw new Error(`Delete failed (${resp.status})`);
+    } catch (e) {
+      setError(e.message || 'Failed to delete.');
       setActivities(prev);
-      setError('Failed to delete activity (are you logged in?)');
     }
   }
 
@@ -138,80 +141,42 @@ export function Games() {
               <div className="row g-3">
                 <div className="col-12 col-md-4">
                   <label htmlFor="act-location" className="form-label visually-hidden">Location</label>
-                  <input
-                    className="form-control"
-                    id="act-location"
-                    name="location"
-                    placeholder="Location"
-                    required
-                    value={form.location}
-                    onChange={update('location')}
-                  />
+                  <input className="form-control" id="act-location" name="location" placeholder="Location" required
+                    value={form.location} onChange={update('location')} />
                 </div>
 
                 <div className="col-12 col-md-5">
                   <label htmlFor="act-text" className="form-label visually-hidden">Sport</label>
-                  <input
-                    className="form-control"
-                    id="act-text"
-                    name="text"
-                    placeholder="Sport"
-                    required
-                    value={form.text}
-                    onChange={update('text')}
-                  />
+                  <input className="form-control" id="act-text" name="text" placeholder="Sport" required
+                    value={form.text} onChange={update('text')} />
                 </div>
 
                 <div className="col-12">
                   <label htmlFor="act-comment" className="form-label visually-hidden">Comment</label>
-                  <textarea
-                    className="form-control"
-                    id="act-comment"
-                    name="comment"
-                    rows="2"
-                    placeholder="Comment (optional)"
-                    value={form.comment}
-                    onChange={update('comment')}
-                  ></textarea>
+                  <textarea className="form-control" id="act-comment" name="comment" rows="2"
+                    placeholder="Comment (optional)" value={form.comment} onChange={update('comment')} />
                 </div>
 
                 <div className="col-6 col-md-2">
                   <label htmlFor="act-username" className="form-label visually-hidden">Username</label>
-                  <input
-                    className="form-control"
-                    id="act-username"
-                    name="username"
-                    placeholder="Username"
-                    value={form.username}
-                    onChange={update('username')}
-                  />
+                  <input className="form-control" id="act-username" name="username" placeholder="Username"
+                    value={form.username} onChange={update('username')} />
                 </div>
 
                 <div className="col-6 col-md-1 d-grid">
-                  <button
-                    className="btn btn-success"
-                    type="button"
-                    onClick={handleAdd}
-                    disabled={adding || !form.location.trim() || !form.text.trim()}
-                  >
+                  <button className="btn btn-success" type="button"
+                    onClick={handleAdd} disabled={adding || !form.location.trim() || !form.text.trim()}>
                     {adding ? 'Adding…' : 'Add'}
                   </button>
                 </div>
               </div>
-              {error && <div className="text-danger mt-2">{error}</div>}
             </form>
           </div>
 
-          <div
-            className="card-body p-0 d-flex flex-column"
-            id="activity-container"
-            role="region"
-            aria-live="polite"
-            aria-label="Activities list"
-          >
-            <div className="px-3 py-2 border-top bg-body-tertiary small text-muted">
-              Activity feed{loading ? ' (loading...)' : ''}
-            </div>
+          <div className="card-body p-0 d-flex flex-column" id="activity-container" role="region" aria-live="polite" aria-label="Activities list">
+            {error && <div className="alert alert-warning m-3">{error}</div>}
+
+            <div className="px-3 py-2 border-top bg-body-tertiary small text-muted">Activity feed</div>
             <div className="feed flex-grow-1 overflow-auto">
               {activities.length === 0 ? (
                 <p className="text-muted m-0 p-3 text-center" data-empty-hint>
@@ -231,11 +196,9 @@ export function Games() {
                             by {a.username} • {formatWhen(a.createdAt)}
                           </div>
                         </div>
-                        <button
-                          className="btn btn-sm btn-outline-danger"
+                        <button className="btn btn-sm btn-outline-danger"
                           onClick={() => handleDelete(a.id)}
-                          aria-label={`Delete ${a.text} at ${a.location}`}
-                        >
+                          aria-label={`Delete ${a.text} at ${a.location}`}>
                           Delete
                         </button>
                       </div>
@@ -255,7 +218,6 @@ function safeId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
   return 'id-' + Math.random().toString(36).slice(2);
 }
-
 function formatWhen(iso) {
   try { return new Date(iso).toLocaleString(); } catch { return ''; }
 }

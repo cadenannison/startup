@@ -5,7 +5,6 @@ const uuid = require('uuid');
 const DB = require('./database.js'); 
 const app = express();
 const authCookieName = 'rap_token';
-
 const port = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 4000;
 
 app.use(express.json());
