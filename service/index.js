@@ -1,4 +1,6 @@
 const express = require('express');
+const DB = require('./database.js');
+
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');

@@ -22,6 +22,19 @@ Images: I learned that you need to make a relative path i.e. don't put a "/" in 
 
 `![Design image](images/RiseAndPlay.png)`
 
+
+##
+
+**Front end**
+
+npm run build
+
+**backend**
+
+NODE_ENV=production npm start
+
+
+
 ## Secure Sign in 
 '''
 ssh -i [key pair file] ubuntu@[yourdomainnamehere]
