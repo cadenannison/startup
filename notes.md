@@ -899,3 +899,83 @@ const isDev = process.env.NODE_ENV === 'development';
 secure: !isDev
 ```  
 Enables HTTPS-only cookies in production automatically while allowing local testing in development
+
+## Mongo Database
+
+**MongoClient Connection**
+Create a single client to connect Node app to MongoDB Atlas
+```js
+const { MongoClient } = require('mongodb');
+const client = new MongoClient(MONGO_URL);
+await client.connect();
+```
+
+**Selecting Database & Collection**
+How to choose which database and collection to read/write.
+```js
+const db = client.db('riseandplay');
+const activities = db.collection('activities');
+```
+
+**Ping the Database**
+Verify connection string and network are correct.
+```js
+await db.command({ ping: 1 });
+```
+
+**Insert a Document**
+Add a new JSON object to a collection
+```js
+await activities.insertOne({ text: 'Soccer', location: 'Central Park' });
+```
+
+**Query Documents**
+Find documents that match a filter
+```js
+const list = await activities.find({ location: /park/i }).toArray();
+```
+**Delete a Document**
+Remove a document by some filter 
+```js
+const { ObjectId } = require('mongodb');
+await activities.deleteOne({ _id: new ObjectId(id), email: ownerEmail });
+```
+**Update user**
+Update fields on an existing user or create it if it doesn’t exist
+```js
+await users.updateOne({ email }, { $set: user }, { upsert: true });
+```
+
+**Hash Passwords with bcrypt**
+This is how to make peoples passwords safe with hashing
+```js
+const bcrypt = require('bcryptjs');
+const hash = await bcrypt.hash(password, 10);
+const ok = await bcrypt.compare(inputPassword, hash);
+```
+
+**makeshift cookie*
+Set a secure cookie that holds a session token after login
+```js
+res.cookie('rap_token', token, { httpOnly: true, sameSite: 'strict', secure: true });
+```
+
+**Protect routes by verifying the token maps to a user**
+```js
+async function requireAuth(req, res, next) {
+  const token = req.cookies.rap_token;
+  const user = await users.findOne({ token });
+  return user ? (req.user = user, next()) : res.status(401).send({ msg: 'Unauthorized' });
+}
+```
+
+**Call express endpoints from React component**
+
+```js
+const resp = await fetch('/api/activities', { method: 'GET' });
+const list = await resp.json();
+```
+
+
+
+
