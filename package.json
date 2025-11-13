@@ -25,6 +25,7 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
     "bootstrap": "^5.3.8",
+    "mangodb": "^1.0.0",
     "mongodb": "^7.0.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
