@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const DB = require('./database.js'); 
 const app = express();
+require('dotenv').config();
+
 const authCookieName = 'rap_token';
 const port = process.argv.length > 2 ? parseInt(process.argv[2], 10) : 4000;
 

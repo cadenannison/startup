@@ -27,12 +27,12 @@ Images: I learned that you need to make a relative path i.e. don't put a "/" in 
 
 **Front end**
 
-npm run build
-
+npm run dev
+- hit "o" after
 **backend**
+cd into service->
 
 NODE_ENV=production npm start
-
 
 
 ## Secure Sign in 
