@@ -57,9 +57,21 @@ function useActivitiesWebSocket(onRemoteActivity) {
       try { ws.send(JSON.stringify({ type: 'ping', at: Date.now() })); } catch {}
     };
 
-    ws.onmessage = (evt) => {
+    ws.onmessage = async (evt) => {
       try {
-        const msg = JSON.parse(evt.data);
+        let text;
+
+        if (typeof evt.data === 'string') {
+          text = evt.data;
+        } else if (evt.data instanceof Blob) {
+          text = await evt.data.text(); 
+        } else if (evt.data instanceof ArrayBuffer) {
+          text = new TextDecoder().decode(evt.data); 
+        } else {
+          return;
+        }
+
+        const msg = JSON.parse(text);
         if (msg.type === 'activity:new' && onRemoteActivity) {
           onRemoteActivity(msg.payload);
         }
