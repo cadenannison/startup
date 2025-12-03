@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const DB = require('./database');
+const http = require('http');
+const { peerProxy } = require('./peerProxy');
 
 const app = express();
 const authCookieName = 'rap_token';
@@ -135,6 +137,8 @@ app.use((_req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, 'public') });
 });
 
-app.listen(port, () => {
+const server = http.createServer(app);
+peerProxy(server);
+server.listen(port, () => {
   console.log(`Rise & Play service listening on ${port}`);
 });
