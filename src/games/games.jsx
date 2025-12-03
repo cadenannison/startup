@@ -1,4 +1,3 @@
-// src/games/games.jsx
 import React from 'react';
 import MapBox from './mapBox';
 import './map.css';
@@ -43,6 +42,55 @@ export function Games() {
     return () => { ignore = true; };
   }, []);
 
+function useActivitiesWebSocket(onRemoteActivity) {
+  const wsRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    const url = `${protocol}://${window.location.host}/ws`;
+
+    const ws = new WebSocket(url);
+    wsRef.current = ws;
+
+    ws.onopen = () => {
+      console.log('[WS] open', url);
+      try { ws.send(JSON.stringify({ type: 'ping', at: Date.now() })); } catch {}
+    };
+
+    ws.onmessage = (evt) => {
+      try {
+        const msg = JSON.parse(evt.data);
+        if (msg.type === 'activity:new' && onRemoteActivity) {
+          onRemoteActivity(msg.payload);
+        }
+      } catch (e) {
+        console.warn('[WS] bad message', e);
+      }
+    };
+
+    ws.onerror = (e) => console.warn('[WS] error:', e);
+    ws.onclose = () => console.log('[WS] closed');
+
+    return () => {
+      try { ws.close(); } catch {}
+      wsRef.current = null;
+    };
+  }, [onRemoteActivity]);
+
+  const send = React.useCallback((type, payload) => {
+    const ws = wsRef.current;
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type, payload }));
+    }
+  }, []);
+
+  return send;
+}
+
+const sendWs = useActivitiesWebSocket((activity) => {
+    setActivities((list) => (list.some((a) => a.id === activity.id) ? list : [activity, ...list]));
+});
+
   async function handleAdd() {
     const location = form.location.trim();
     const text = form.text.trim();
@@ -74,6 +122,8 @@ export function Games() {
         return;
       }
       if (!resp.ok) throw new Error(`Create failed (${resp.status})`);
+
+      sendWs('activity:new', activity);
 
       const el = document.getElementById('newActivityForm');
       if (el && window.bootstrap) {
