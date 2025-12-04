@@ -53,11 +53,13 @@ async function updateUserToken(email, token) {
 
 function requireAuth(req, res, next) {
   const token = req.cookies[authCookieName];
-  DB.getUserByToken(token).then((user) => {
-    if (!user) return res.status(401).send({ msg: 'Unauthorized' });
-    req.user = user;
-    next();
-  }).catch(() => res.status(500).send({ msg: 'Server error' }));
+  DB.getUserByToken(token)
+    .then((user) => {
+      if (!user) return res.status(401).send({ msg: 'Unauthorized' });
+      req.user = user;
+      next();
+    })
+    .catch(() => res.status(500).send({ msg: 'Server error' }));
 }
 
 const api = express.Router();
@@ -107,6 +109,8 @@ api.get('/activities', async (_req, res) => {
   }
 });
 
+let wsHub = null;
+
 api.post('/activities', requireAuth, async (req, res) => {
   const { id, location, text, comment, username, createdAt } = req.body || {};
   if (!id || !location || !text || !username || !createdAt) {
@@ -114,6 +118,11 @@ api.post('/activities', requireAuth, async (req, res) => {
   }
   try {
     await DB.addActivity({ id, location, text, comment, username, createdAt });
+
+    if (wsHub) {
+      wsHub.broadcast({ type: 'activity:new', payload: req.body });
+    }
+
     res.status(201).send(req.body);
   } catch {
     res.status(500).send({ msg: 'Failed to add activity' });
@@ -124,6 +133,10 @@ api.delete('/activities/:id', requireAuth, async (req, res) => {
   try {
     const removed = await DB.deleteActivity(req.params.id);
     res.status(removed ? 204 : 404).end();
+
+    if (removed && wsHub) {
+      wsHub.broadcast({ type: 'activity:deleted', payload: { id: req.params.id } });
+    }
   } catch {
     res.status(500).send({ msg: 'Failed to delete activity' });
   }
@@ -138,7 +151,8 @@ app.use((_req, res) => {
 });
 
 const server = http.createServer(app);
-peerProxy(server);
+wsHub = peerProxy(server);
+
 server.listen(port, () => {
   console.log(`Rise & Play service listening on ${port}`);
 });
