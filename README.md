@@ -151,8 +151,8 @@ token
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [X] **Backend listens for WebSocket connection** - I added a peerProxy WebSocket server that attaches to the same HTTP server used by Express. By putting the WS server to server.listen() and adding the /ws upgrade path the backend can accept and manages live WebSocket connections. Now multiple people can connect and receive reel time updates about activties. 
+- [X] **Frontend makes WebSocket connection** - In the Games.jsx file I put a custom hook "useActivitiesWebSocket" that opens a WebSocket connection using ws/wss and the /ws path. When the browser loads the Activities page the hook automatically initializes the WebSocket and handles open/error/close events and keeps the connection alive. This makes it so every tab and/or device is connected to the backend WebSocket server.
+- [X] **Data sent over WebSocket connection** - After somebody posts a new activity the frontend calls sendWs('activity:new', activity) which sends a JSON message through the active WebSocket connection. The backend receives the message and broadcasts it to all connected people and leaves out the sender. This creates a real time updates in the system between all the possible users.
+- [X] **WebSocket data displayed** - Incoming WebSocket messages are processed on the frontend inside ws.onmessage and when a message of type "activity:new' is detected the new activity is added to the Activities list. This makes it so that when any user adds a new activity all open browser tabs should display it without needing to refresh.
+- [X] **Application is fully functional** - My app now supports real user accounts which are stored in MongoDB. There is activity storage, secure login/logout, and working real time activity updates using WebSockets. The frontend and backend communicate over both HTTP and WebSocket and the deployed production version works on the actual domain!
