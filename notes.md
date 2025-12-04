@@ -976,6 +976,107 @@ const resp = await fetch('/api/activities', { method: 'GET' });
 const list = await resp.json();
 ```
 
+## Websockets
 
+**Attach WebSocket to HTTP server**  
+Bind the WS server to the same port as Express so upgrade requests are handled.
+```js
+const http = require('http');
+const server = http.createServer(app);
+peerProxy(server);
+server.listen(port);
+```
 
+**Create a WebSocketServer from existing HTTP server**
+Lets ws auto-upgrade any ws:// or wss:// requests received on that port.
+```js
+const { WebSocketServer } = require('ws');
+const wss = new WebSocketServer({ server });
+```
 
+**Handle new client connections**
+Runs once per browser/tab that connects and gives you a socket to talk to that person
+```js
+wss.on('connection', (socket) => {
+  socket.isAlive = true;
+});
+```
+
+**Receive messages from a client**
+Parses inbound JSON and acts on message type - payload
+```js
+socket.on('message', (data) => {
+  const msg = JSON.parse(data.toString());
+  // handle msg.type / msg.payload
+});
+```
+
+**Broadcast to all other clients**
+Relays one client’s message to everyone else that’s still open.
+```js
+wss.clients.forEach((client) => {
+  if (client !== socket && client.readyState === 1) client.send(data);
+});
+```
+
+**Keep connections alive with ping/pong**
+Terminates dead sockets and keeps NAT/proxies from closing idle connections.
+```js
+socket.on('pong', () => { socket.isAlive = true; });
+
+setInterval(() => {
+  wss.clients.forEach((c) => {
+    if (!c.isAlive) return c.terminate();
+    c.isAlive = false; c.ping();
+  });
+}, 10000);
+```
+
+**Build the correct WS URL**
+Picks ws for HTTP dev and wss for HTTPS in prod targeting /ws.
+```js
+const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+const url = `${protocol}://${window.location.host}/ws`;
+```
+
+**Open the WebSocket**
+Creates a live duplex connection to your backend.
+```js
+const ws = new WebSocket(url);
+```
+
+Keeps the same socket across renders
+
+```js
+const wsRef = React.useRef(null);
+wsRef.current = ws;
+```
+
+Verifies the path works and wakes the broadcast loop.
+```js
+ws.onopen = () => ws.send(JSON.stringify({ type: 'ping', at: Date.now() }));
+```
+
+Adds a remotely created activity if we don’t already have it.
+```js
+ws.onmessage = (evt) => {
+  const msg = JSON.parse(evt.data);
+  if (msg.type === 'activity:new') setActivities((xs) =>
+    xs.some((a) => a.id === msg.payload.id) ? xs : [msg.payload, ...xs]);
+};
+```
+
+**Send helper for app events**
+```js
+const sendWs = (type, payload) => {
+  const s = wsRef.current;
+  if (s && s.readyState === WebSocket.OPEN) s.send(JSON.stringify({ type, payload }));
+};
+```
+
+**Use it after successful POST**
+Only broadcast once mongo DB write succeeds
+```js
+await fetch('/api/activities', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(activity) });
+sendWs('activity:new', activity);
+```
